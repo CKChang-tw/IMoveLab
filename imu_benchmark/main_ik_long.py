@@ -1,0 +1,56 @@
+# name: main_ik_long.py
+# description: IMU-based IK for MTw data collected during long trials 
+# author: Vu Phan
+# date: 2025/01/24
+
+
+import argparse
+
+from imu_benchmark.utils import common
+from imu_benchmark.scripts import run_mt, run_mocap, run_mt_opensense
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--f_type', type = str, default = None) # 'Xsens', 'MAH', 'VQF', 'MAD', or 'EKF'
+    parser.add_argument('--dim', type = str, default = '9d') # '9d' or '6d'
+
+    parser.add_argument('--do_mocap', action = 'store_true') # run mocap
+
+    parser.add_argument('--disable_offset_removal', action = 'store_false') # remove offset from the data
+    parser.add_argument('--do_opensense', action = 'store_true') # run OpenSense for IMU data   
+
+    parser.add_argument('--subject', type = str, default = None) # subject number, if not specified, run all subjects
+    parser.add_argument('--task', type = str, default = None) # long_walk1, long_walk2, or long_walk3
+
+    args = parser.parse_args()
+
+    if args.do_mocap:
+        run_mocap.mocap_ik(args.subject, args.task, args.disable_offset_removal, source = 'mt_long')
+
+    else:
+        selected_setup = 'mm'
+
+        if args.f_type is None:
+            filter_config_check = True
+        else:
+            filter_config_check, error_msg = common.check_filter_config(args.f_type, args.dim)
+
+        if filter_config_check:
+            if args.do_opensense:
+                run_mt_opensense.mt_ik_opensense(selected_setup, args.f_type, args.dim, args.subject, 'long_walk1', args.disable_offset_removal, source = 'mt_long')
+            else:
+                run_mt.mt_ik(selected_setup, args.f_type, args.dim, args.subject, 'long_walk1', args.disable_offset_removal, source = 'mt_long') 
+        else:
+            print(error_msg)
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
