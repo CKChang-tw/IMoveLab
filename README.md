@@ -1,12 +1,12 @@
+![figure [pipeline]: IMU Pipeline Overview](figures/imu_pipeline_overview.png)
+
 # Inertial Motion Tracking Now Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress
 
 [![preprint](https://img.shields.io/badge/preprint-link-red)](https://www.biorxiv.org/) <!-- update link for preprint -->
 [![data](https://img.shields.io/badge/data-IMOVE23-brightgreen)](https://sites.google.com/andrew.cmu.edu/i-move-23) <!-- update link for data -->
 [![license](https://img.shields.io/badge/license-TBD-yellow)](https://www.biorxiv.org/) <!-- update link for license -->
 
-![figure [pipeline]: IMU Pipeline Overview](figures/imu_pipeline_overview.png)
-
-IMULab is a benchmark of state-estimation filters for tracking and studying human movements using inertial measurement units (IMUs). A graphical user interface associated with this platform for non-code users can also be found at this [link](https://www.biorxiv.org/).
+**IMULab** is a benchmark of state-estimation filters for tracking and studying human movements using inertial measurement units (IMUs). <span style="color:#A4508B">A graphical user interface associated with this platform for no-code users can be found at this [link](https://www.biorxiv.org/)</span>.
 
 This platform was initially created and validated for motion tracking of the lower body, but it can also be applied to the upper- or full-body motion tracking with some modifications.
 
@@ -31,7 +31,7 @@ You will need to send a request with your institutional email account to downloa
 
 See `README.md` in the `imu_benchmark` or `imu_biodynamics` folder for how to store the data.
 
-## 🚀 Demo
+## 🚀 Run the Code
 See `README.md` in the `imu_benchmark` or `imu_biodynamics` folder for how to run the code.
 
 ## 🙏 Acknowledgements
