@@ -6,7 +6,7 @@
 [![data](https://img.shields.io/badge/data-IMOVE23-brightgreen)](https://sites.google.com/andrew.cmu.edu/i-move-23) <!-- update link for data -->
 [![license](https://img.shields.io/badge/license-TBD-yellow)](https://www.biorxiv.org/) <!-- update link for license -->
 
-**IMULab** is a benchmark of state-estimation filters for tracking and studying human movements using inertial measurement units (IMUs). <span style="color:#A4508B">A graphical user interface associated with this platform for no-code users can be found at this [link](https://www.biorxiv.org/)</span>.
+**IMULab** is a benchmark of state-estimation filters for tracking and studying human movements using inertial measurement units (IMUs). <span style="color:red">A graphical user interface associated with this platform for no-code users can be found at this [link](https://www.biorxiv.org/)</span>.
 
 This platform was initially created and validated for motion tracking of the lower body, but it can also be applied to the upper- or full-body motion tracking with some modifications.
 
