@@ -1,2 +1,5 @@
-# IMU_Kinematics_Benchmark
-Codes for IMU kinematics benchmark.
+# Directory Tree for Data from Experiment 4
+
+These will be provided soon.
+
+
