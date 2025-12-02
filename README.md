@@ -3,8 +3,8 @@
 # Inertial Motion Tracking Now Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress
 
 [![preprint](https://img.shields.io/badge/preprint-link-red)](https://www.biorxiv.org/) <!-- update link for preprint -->
-[![data](https://img.shields.io/badge/data-IMOVE23-brightgreen)](https://sites.google.com/andrew.cmu.edu/i-move-23) <!-- update link for data -->
-[![license](https://img.shields.io/badge/license-TBD-yellow)](https://www.biorxiv.org/) <!-- update link for license -->
+[![data1](https://img.shields.io/badge/data-IMOVE23-brightgreen)](https://sites.google.com/andrew.cmu.edu/i-move-23) 
+[![data2](https://img.shields.io/badge/data-HAKnee-yellow)]() <!-- update link for data -->
 
 **IMULab** is a benchmark of state-estimation filters for tracking and studying human movements using inertial measurement units (IMUs). *A graphical user interface associated with this platform for no-code users can be found at this [link](https://www.biorxiv.org/)*.
 
@@ -40,18 +40,15 @@ We thank the authors of all the state-estimation filters included in this platfo
 ## 📄 Citation
 If you use any part of the data or code, please cite [our paper]().
 ```
-@InProceedings{phan2025,  
-title={Inertial Motion Tracking Now Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress},
-author={Phan, Vu and Li, Zhixiong and Meinders, Evy and Gale, tom and Anderst, William and Ng-Thow-Hing, Julian and Khandan, Aminreza and Halilaj, Eni},  
-booktitle={in submission},  
-year={2025}  
+@ARTICLE{phan2025,  
+title   =   {Inertial Motion Tracking Now Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress},
+author  =   {Phan, Vu and Li, Zhixiong and Meinders, Evy and Gale, tom and Anderst, William and Ng-Thow-Hing, Julian and Khandan, Aminreza and Halilaj, Eni},  
+journal =   {in submission},  
+year    =   {2025}  
 }  
 ```
 
-If find this repository helpful for your research, please give it a ⭐.
-
-## ⚖️ License 
-*(To be defined)*.
+If you find this repository helpful for your research, please give it a ⭐.
 
 ## ✉️ Contact
 Please contact Vu Phan (vuphan@andrew.cmu.edu) regarding any question and feedback.
