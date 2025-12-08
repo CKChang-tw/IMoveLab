@@ -1,18 +1,19 @@
 ![figure [pipeline]: IMU Pipeline Overview](figures/imu_pipeline_overview.png)
 
-# Inertial Motion Tracking Now Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress
+# Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress
 
 [![preprint](https://img.shields.io/badge/preprint-link-red)](https://www.biorxiv.org/) <!-- update link for preprint -->
 [![data1](https://img.shields.io/badge/data-IMOVE23-brightgreen)](https://sites.google.com/andrew.cmu.edu/i-move-23) 
 [![data2](https://img.shields.io/badge/data-HAKnee-yellow)]() <!-- update link for data -->
+[![gui](https://img.shields.io/badge/GUI-IMULab-blue)](https://imulab.org/)
 
-**IMULab** is a benchmark of state-estimation filters for tracking and studying human movements using inertial measurement units (IMUs). *A graphical user interface associated with this platform for no-code users can be found at this [link](https://www.biorxiv.org/)*.
+**IMULab** is a benchmark of state-estimation filters for tracking and studying human movements using inertial measurement units (IMUs). *A graphical user interface associated with this platform for no-code users can be found at this [link](https://imulab.org/)*.
 
 This platform was initially created and validated for motion tracking of the lower body, but it can also be applied to the upper- or full-body motion tracking with some modifications.
 
 
 ## ⚙️ Installation
-The code is fully tested with `Python 3.10` on `Ubuntu 24.04`. We recommend creating environments with `conda` to run the code.
+The code is fully tested with `Python 3.10` on `Ubuntu 24.04` and `MacOS`. We recommend creating environments with `conda` to run the code.
 ```
 conda create --name imu_benchmark python==3.10
 conda activate imu_benchmark
@@ -41,7 +42,7 @@ We thank the authors of all the state-estimation filters included in this platfo
 If you use any part of the data or code, please cite [our paper]().
 ```
 @ARTICLE{phan2025,  
-title   =   {Inertial Motion Tracking Now Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress},
+title   =   {Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress},
 author  =   {Phan, Vu and Li, Zhixiong and Meinders, Evy and Gale, tom and Anderst, William and Ng-Thow-Hing, Julian and Khandan, Aminreza and Halilaj, Eni},  
 journal =   {in submission},  
 year    =   {2025}  
