@@ -18,9 +18,8 @@ def main():
 
     parser.add_argument('--do_mocap', action = 'store_true') # run mocap
 
-    parser.add_argument('--do_mvn', action = 'store_true') # run IMU data collected from MVN instead of MTw Manager TODO: implement this function
+    parser.add_argument('--do_mvn', action = 'store_true') # run IMU data collected from MVN instead of MTw Manager 
     parser.add_argument('--do_opensense', action = 'store_true') # run OpenSense for IMU data    
-    parser.add_argument('--disable_offset_removal', action = 'store_false') # remove offset from the data
 
     parser.add_argument('--subject', type = int, default = None) # subject number, if not specified, run all subjects
     parser.add_argument('--task', type = str, default = None) # task being performed, if not specified, run all tasks
@@ -28,7 +27,7 @@ def main():
     args = parser.parse_args()
 
     if args.do_mocap:
-        run_mocap.mocap_ik(args.subject, args.task, args.disable_offset_removal)
+        run_mocap.mocap_ik(args.subject, args.task)
 
     else:
         if args.f_type is None:
@@ -38,10 +37,10 @@ def main():
 
         if filter_config_check:
             if args.do_opensense:
-                run_mt_opensense.mt_ik_opensense(args.selected_setup, args.f_type, args.dim, args.subject, args.task, args.disable_offset_removal) # TODO: implement this function
+                run_mt_opensense.mt_ik_opensense(args.selected_setup, args.f_type, args.dim, args.subject, args.task) 
 
             else:
-                run_mt.mt_ik(args.selected_setup, args.f_type, args.dim, args.subject, args.task, args.disable_offset_removal) 
+                run_mt.mt_ik(args.selected_setup, args.f_type, args.dim, args.subject, args.task) 
         else:
             print(error_msg)
 

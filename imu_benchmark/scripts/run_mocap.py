@@ -15,7 +15,7 @@ from imu_benchmark.utils.mocap import preprocessing_mocap, ik_mocap
 from imu_benchmark.utils.mt.ik_mt import get_static_offset_mt
 
 
-def mocap_ik(subject, task, remove_offset, source = 'mt'):
+def mocap_ik(subject, task, source = 'mt'):
     ''' TBD '''
 
     if source == 'mt':
@@ -43,11 +43,6 @@ def mocap_ik(subject, task, remove_offset, source = 'mt'):
         static_orientation_mocap     = ik_mocap.get_orientation_mocap(data_static_mocap, cluster_use = True, task = task_static)
         cal_orientation_mocap        = ik_mocap.calibration_mocap(static_orientation_mocap_avg, cluster_use = True)
 
-        if remove_offset:
-            print('- Calculate offset for static correction')
-            static_ja_mocap  = ik_mocap.get_all_ja_mocap(cal_orientation_mocap, static_orientation_mocap, cluster_use = True)
-            static_ja_offset = get_static_offset_mt(static_ja_mocap)
-
         for selected_task in task_list:
             print('*** TASK: ' + selected_task)
 
@@ -73,13 +68,7 @@ def mocap_ik(subject, task, remove_offset, source = 'mt'):
                 main_orientation_mocap = ik_mocap.get_orientation_mocap(data_main_mocap, cluster_use = True, task = selected_task)
                 main_ja_mocap          = ik_mocap.get_all_ja_mocap(cal_orientation_mocap, main_orientation_mocap, cluster_use = True)
 
-                if remove_offset:
-                    title_offset = '_roffset'
-                    print('- Remove offset')
-                    for joint in main_ja_mocap.keys():
-                        main_ja_mocap[joint] = main_ja_mocap[joint] - static_ja_offset[joint]
-                else:
-                    title_offset = ''
+                title_offset = ''
 
                 if source == 'mt_long':
                     pass 

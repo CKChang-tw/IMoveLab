@@ -16,7 +16,7 @@ from imu_benchmark.utils.mt import preprocessing_mt, calibration_mt, ik_mt
 
 
 # --- When using functional calibration (for 9D) --- #
-def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'mt'):
+def mt_ik(selected_setup, f_type, dim, subject, task, source = 'mt'):
     ''' Get joint angles from MTw data 
     
     Args:
@@ -25,7 +25,6 @@ def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'm
        + dim (str): dimension of the data, i.e., '9D' or '6D'
        + subject (int): subject number
        + task (str): task being performed
-       + remove_offset (bool): remove offset from the data
 
     Returns:
        + NA
@@ -82,20 +81,6 @@ def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'm
                 for sensor_name in seg2sens.keys():
                     initial_orientation[sensor_name] = quaternion.from_rotation_matrix(np.identity(3))*quaternion.from_rotation_matrix(seg2sens[sensor_name])
 
-            if remove_offset:
-                print('- Find static offsets')
-                if source == 'mt':
-                    static_orientation_mt = ik_mt.get_imu_orientation_mt(data_static_mt, f_type = f_type, fs = constant_mt.MT_SAMPLING_RATE, dim = dim.upper(), params = f_params)
-                elif source == 'mt_long':
-                    static_orientation_mt = ik_mt.get_imu_orientation_mt(data_static_mt, f_type = f_type, fs = constant_mocap.MOCAP_SAMPLING_RATE, dim = dim.upper(), params = f_params)
-
-                if dim.upper() == '6D':
-                    if source == 'mt':
-                        static_orientation_mt = calibration_mt.correct_random_6D_orientation(initial_orientation, static_orientation_mt)
-                    elif source == 'mt_long':
-                        static_orientation_mt = calibration_mt.correct_random_6D_orientation(initial_orientation, static_orientation_mt, fs = constant_mocap.MOCAP_SAMPLING_RATE)
-                static_ja_mt          = ik_mt.get_all_ja_mt(seg2sens, static_orientation_mt)
-                static_offset_mt      = ik_mt.get_static_offset_mt(static_ja_mt) 
 
             for selected_task in task_list:
                 print('*** TASK: ' + selected_task)
@@ -117,13 +102,7 @@ def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'm
                             orientation_mt = calibration_mt.correct_random_6D_orientation(initial_orientation, orientation_mt, fs = constant_mocap.MOCAP_SAMPLING_RATE)
                     ja_mt          = ik_mt.get_all_ja_mt(seg2sens, orientation_mt)
 
-                    if remove_offset:
-                        title_offset = '_roffset'
-                        print('- Remove offsets') 
-                        for joint in ja_mt.keys():
-                            ja_mt[joint] = ja_mt[joint] - static_offset_mt[joint]
-                    else:
-                        title_offset = ''
+                    title_offset = ''
 
                     if source == 'mt_long':
                         pass 
@@ -166,7 +145,7 @@ def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'm
 
 
 # # --- When using perfect standing alignment (for 9D) --- #
-# def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'mt'):
+# def mt_ik(selected_setup, f_type, dim, subject, task, source = 'mt'):
 #     ''' Get joint angles from MTw data 
     
 #     Args:
@@ -175,7 +154,6 @@ def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'm
 #        + dim (str): dimension of the data, i.e., '9D' or '6D'
 #        + subject (int): subject number
 #        + task (str): task being performed
-#        + remove_offset (bool): remove offset from the data
 
 #     Returns:
 #        + NA
@@ -232,20 +210,6 @@ def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'm
 #             for sensor_name in seg2sens.keys():
 #                 initial_orientation[sensor_name] = quaternion.from_rotation_matrix(np.identity(3))*quaternion.from_rotation_matrix(seg2sens[sensor_name])
 
-#             if remove_offset:
-#                 print('- Find static offsets')
-#                 if source == 'mt':
-#                     static_orientation_mt = ik_mt.get_imu_orientation_mt(data_static_mt, f_type = f_type, fs = constant_mt.MT_SAMPLING_RATE, dim = dim.upper(), params = f_params)
-#                 elif source == 'mt_long':
-#                     static_orientation_mt = ik_mt.get_imu_orientation_mt(data_static_mt, f_type = f_type, fs = constant_mocap.MOCAP_SAMPLING_RATE, dim = dim.upper(), params = f_params)
-
-#                 if dim.upper() == '6D':
-#                     if source == 'mt':
-#                         static_orientation_mt = calibration_mt.correct_random_6D_orientation(initial_orientation, static_orientation_mt)
-#                     elif source == 'mt_long':
-#                         static_orientation_mt = calibration_mt.correct_random_6D_orientation(initial_orientation, static_orientation_mt, fs = constant_mocap.MOCAP_SAMPLING_RATE)
-#                 static_ja_mt          = ik_mt.get_all_ja_mt(seg2sens, static_orientation_mt)
-#                 static_offset_mt      = ik_mt.get_static_offset_mt(static_ja_mt) 
 
 #             for selected_task in task_list:
 #                 print('*** TASK: ' + selected_task)
@@ -267,13 +231,7 @@ def mt_ik(selected_setup, f_type, dim, subject, task, remove_offset, source = 'm
 #                         orientation_mt = calibration_mt.correct_random_6D_orientation(initial_orientation, orientation_mt, fs = constant_mocap.MOCAP_SAMPLING_RATE)
 #                     ja_mt          = ik_mt.get_all_ja_mt(seg2sens, orientation_mt)
 
-#                     if remove_offset:
-#                         title_offset = '_roffset'
-#                         print('- Remove offsets') 
-#                         for joint in ja_mt.keys():
-#                             ja_mt[joint] = ja_mt[joint] - static_offset_mt[joint]
-#                     else:
-#                         title_offset = ''
+#                     title_offset = ''
 
 #                     if source == 'mt_long':
 #                         pass 

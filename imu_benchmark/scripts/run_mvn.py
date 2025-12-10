@@ -15,13 +15,12 @@ from imu_benchmark.utils import common
 from imu_benchmark.utils.mt import preprocessing_mt, calibration_mt, ik_mt, preprocessing_mvn
 
 
-def mvn_ik(subject, task, remove_offset):
+def mvn_ik(subject, task):
     ''' Get joint angles from MVN data
 
     Args:
         + subject (int): subject number
         + task (str): task being performed
-        + remove_offset (bool): remove offset from the data
 
     Returns:
         + NA
@@ -56,12 +55,6 @@ def mvn_ik(subject, task, remove_offset):
 
         seg2sens = calibration_mt.sensor_to_segment_mt(data_static_mt, data_walking_mt, walking_period, data_jumping_mt, jumping_period, selected_setup)
         
-        if remove_offset:
-            print('- Find static offsets')
-            static_orientation_mt = ik_mt.get_imu_orientation_mt(data_static_mt, f_type = f_type, fs = constant_mt.MT_SAMPLING_RATE, dim = dim.upper(), params = f_params)
-            static_ja_mt          = ik_mt.get_all_ja_mt(seg2sens, static_orientation_mt)
-            static_offset_mt      = ik_mt.get_static_offset_mt(static_ja_mt) 
-
 
         for selected_task in task_list:
             print('*** Task ' + selected_task)
@@ -70,40 +63,8 @@ def mvn_ik(subject, task, remove_offset):
             print('- Estimate joint angles')
             ja_mvn = ik_mt.get_all_ja_mt(seg2sens, orientation_mvn)
 
-            if remove_offset:
-                title_offset = '_roffset'
-                print('- Remove offsets') 
-                for joint in ja_mvn.keys():
-                    ja_mvn[joint] = ja_mvn[joint] - static_offset_mt[joint]
-            else:
-                title_offset = ''
+            title_offset = ''
 
-            # import matplotlib.pyplot as plt
-            # fig, ax = plt.subplots(5, 2, figsize = (20, 10), sharex = True, sharey = True)
-            # count = 0
-            # for joint in ja_mvn.keys():
-            #     ax[count%5, count//5].plot(ja_mvn[joint], label = 'mvn')
-            #     ax[count%5, count//5].set_title(joint)
-            #     count += 1
-
-            # # test = quaternion.as_float_array(orientation_mvn['thigh_l'])
-            # # # test_old = 1*test
-            # # # test[0] = quat_abs(test[0])
-            # # # for i in range(1, test.shape[0]):
-            # # #     if quat_dot(test[i], test[i-1]) < 0:
-            # # #         test[i] = -test[i]
-
-            # # plt.plot(test)
-            # # # fig, ax = plt.subplots(2, 1, sharex = True, sharey = True)
-
-            # # # ax[1].plot(test)
-            # # # ax[1].plot(np.linalg.norm(test, axis = 1), color = 'k', linestyle = 'solid')
-
-            # # # ax[0].plot(test_old)
-            # # # ax[0].plot(np.linalg.norm(test_old, axis = 1), color = 'k', linestyle = 'solid')
-
-            # plt.show()
-            # breakpoint()
 
             print('- Apply synchronization')
             sync_fn = constant_common.OUT_SYNC_INFO + 'sync_info_s' + str(subject) + '_' + selected_task + '.pkl'

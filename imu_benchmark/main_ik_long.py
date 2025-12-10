@@ -17,7 +17,6 @@ def main():
 
     parser.add_argument('--do_mocap', action = 'store_true') # run mocap
 
-    parser.add_argument('--disable_offset_removal', action = 'store_false') # remove offset from the data
     parser.add_argument('--do_opensense', action = 'store_true') # run OpenSense for IMU data   
 
     parser.add_argument('--subject', type = str, default = None) # subject number, if not specified, run all subjects
@@ -38,9 +37,9 @@ def main():
 
         if filter_config_check:
             if args.do_opensense:
-                run_mt_opensense.mt_ik_opensense(selected_setup, args.f_type, args.dim, args.subject, 'long_walk1', args.disable_offset_removal, source = 'mt_long')
+                run_mt_opensense.mt_ik_opensense(selected_setup, args.f_type, args.dim, args.subject, 'long_walk1', source = 'mt_long')
             else:
-                run_mt.mt_ik(selected_setup, args.f_type, args.dim, args.subject, 'long_walk1', args.disable_offset_removal, source = 'mt_long') 
+                run_mt.mt_ik(selected_setup, args.f_type, args.dim, args.subject, 'long_walk1', source = 'mt_long')
         else:
             print(error_msg)
 

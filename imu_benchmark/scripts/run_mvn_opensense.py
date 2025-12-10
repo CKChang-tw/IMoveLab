@@ -14,13 +14,12 @@ from imu_benchmark.utils import common
 from imu_benchmark.utils.mt import preprocessing_mt, calibration_mt, ik_mt, ik_os, preprocessing_mvn
 
 
-def mvn_ik_opensense(subject, task, remove_offset):
+def mvn_ik_opensense(subject, task):
     ''' Get joint angles from MVN data constrained by OpenSense biomechanical model
 
     Args:
         + subject (int): subject number
         + task (str): task being performed
-        + remove_offset (bool): remove offset from the data
 
     Returns:
         + NA
@@ -59,16 +58,6 @@ def mvn_ik_opensense(subject, task, remove_offset):
         print('- Apply the customized sensor-to-segment calibration to the OpenSim model: ' + os_model)
         ik_os.os_calibration_customized(seg2sens, os_model)
 
-        if remove_offset:
-            print('- Find static offset')
-            static_orientation_mt = ik_mt.get_imu_orientation_mt(data_static_mt, f_type = f_type, fs = constant_mt.MT_SAMPLING_RATE, dim = dim.upper(), params = f_params)
-            ik_os.convert_imu_orientation_to_os(subject, f_type, static_orientation_mt, fs = constant_mt.MT_SAMPLING_RATE, stat_flag = True)
-            static_orientation_fn = 's' + str(subject) + '_cal_' + f_type + '_orientation.sto'
-            ik_os.os_ik(static_orientation_fn, os_model, False)
-
-            ik_static_fn     = 'ik_s' + str(subject) + '_cal_' + f_type + '_orientation.mot'
-            imu_os_static_ja = ik_os.get_all_ja_os(ik_static_fn, os_model)
-            static_offset_mt = ik_mt.get_static_offset_mt(imu_os_static_ja) 
 
         for selected_task in task_list:
             print('*** Task ' + selected_task)
@@ -83,14 +72,7 @@ def mvn_ik_opensense(subject, task, remove_offset):
             ik_fn     = 'ik_s' + str(subject) + '_' + f_type + '_orientation.mot'
             imu_os_ja = ik_os.get_all_ja_os(ik_fn, os_model) 
 
-            if remove_offset:
-                title_offset = '_roffset'
-                print('- Remove offset')
-                for joint in imu_os_ja.keys():
-                    imu_os_ja[joint] = imu_os_ja[joint] - static_offset_mt[joint]
-            
-            else:
-                title_offset = ''
+            title_offset = ''
 
             print('- Apply synchronization')
             sync_fn = constant_common.OUT_SYNC_INFO + 'sync_info_s' + str(subject) + '_' + selected_task + '.pkl'

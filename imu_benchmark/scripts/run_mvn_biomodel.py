@@ -15,13 +15,12 @@ from imu_benchmark.utils import common
 from imu_benchmark.utils.mt import preprocessing_mt, calibration_mt, ik_mt
 
 
-def mvn_ik_biomodel(subject, task, remove_offset):
+def mvn_ik_biomodel(subject, task):
     ''' Get joint angles from MVN biomechanical model
 
     Args:
         + subject (int): subject number
         + task (str): task being performed
-        + remove_offset (bool): remove offset from the data
 
     Returns:
         + NA
@@ -56,12 +55,6 @@ def mvn_ik_biomodel(subject, task, remove_offset):
 
         seg2sens = calibration_mt.sensor_to_segment_mt(data_static_mt, data_walking_mt, walking_period, data_jumping_mt, jumping_period, selected_setup)
         
-        if remove_offset:
-            print('- Find static offsets')
-            static_orientation_mt = ik_mt.get_imu_orientation_mt(data_static_mt, f_type = f_type, fs = constant_mt.MT_SAMPLING_RATE, dim = dim.upper(), params = f_params)
-            static_ja_mt          = ik_mt.get_all_ja_mt(seg2sens, static_orientation_mt)
-            static_offset_mt      = ik_mt.get_static_offset_mt(static_ja_mt) 
-
         for selected_task in task_list:
             print('*** Task ' + selected_task)
 
@@ -76,13 +69,7 @@ def mvn_ik_biomodel(subject, task, remove_offset):
                 if 'adduction' in joint:
                     ja_mvn_biomodel[joint] = -ja_mvn_biomodel[joint]
 
-            if remove_offset:
-                title_offset = '_roffset'
-                print('- Remove offsets') 
-                for joint in ja_mvn_biomodel.keys():
-                    ja_mvn_biomodel[joint] = ja_mvn_biomodel[joint] - static_offset_mt[joint]
-            else:
-                title_offset = ''
+            title_offset = ''
 
             print('- Apply synchronization')
             sync_fn = constant_common.OUT_SYNC_INFO + 'sync_info_s' + str(subject) + '_' + selected_task + '.pkl'
