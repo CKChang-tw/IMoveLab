@@ -1,4 +1,4 @@
-# name: plot_benchmark_f5_xsens_added.py
+# name: plot_benchmark_f4.py
 # export PYTHONPATH=$PYTHONPATH:/path/to/imu_benchmark
 
 
@@ -574,9 +574,10 @@ ax4.set_xlabel('Time (minute)', fontsize = fontsize_label)
 
 ax4.set_ylabel(r'Overall RMSD $(^o)$', fontsize = fontsize_label)
 
+import os
+os.makedirs('imu_benchmark/figures', exist_ok = True)
 
-
-plt.savefig('imu_benchmark/plot/benchmark_f5_xsens_added.svg')
+plt.savefig('imu_benchmark/figures/benchmark_f4.svg')
 
 
 plt.show()

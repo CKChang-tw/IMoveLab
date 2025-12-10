@@ -1,4 +1,4 @@
-# name: plot_benchmark_fs1_drifting_dof.py
+# name: plot_benchmark_fs2.py
 # export PYTHONPATH=$PYTHONPATH:/path/to/imu_benchmark
 
 
@@ -319,7 +319,11 @@ ax2.set_xlabel('Time (minute)', fontsize = fontsize_label)
 
 # ax2.legend(frameon = False)
 
-plt.savefig('imu_benchmark/plot/benchmark_f5_drifting_dof.svg')
+import os
+
+os.makedirs('imu_benchmark/figures', exist_ok = True)
+
+plt.savefig('imu_benchmark/figures/benchmark_fs2.svg')
 
 plt.show()
 

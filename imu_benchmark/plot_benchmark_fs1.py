@@ -1,4 +1,4 @@
-# name: plot_benchmark_f5_four_9d_filters.py
+# name: plot_benchmark_fs1.py
 # export PYTHONPATH=$PYTHONPATH:/path/to/imu_benchmark
 
 
@@ -388,7 +388,11 @@ ax[2].set_xlim([0.5, 3.5])
 ax[2].set_xticks([0.5, 1, 2, 3, 3.5])
 ax[2].set_xticklabels(['', 'T1', 'T2', 'T3', ''])
 
-plt.savefig('imu_benchmark/plot/benchmark_f5_three_9d_filters.svg')
+import os
+
+os.makedirs('imu_benchmark/figures', exist_ok = True)
+
+plt.savefig('imu_benchmark/figures/benchmark_fs1.svg')
 
 plt.show()
 

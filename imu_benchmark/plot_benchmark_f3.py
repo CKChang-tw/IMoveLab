@@ -1,5 +1,5 @@
-# name: plot_benchmark_f2.py
-# description: plot figure 2 of the benchmark IMU paper
+# name: plot_benchmark_f3.py
+# description: plot figure 3 of the benchmark IMU paper
 # author: Vu Phan
 # date: 2025/02/25
 
@@ -499,8 +499,11 @@ ax3.set_ylim(0, 15)
 ax3.set_yticks([0, 5, 10, 15])
 ax3.set_ylabel(r'Overall RMSD $(^{\circ})$', fontsize = fontsize_label)
 
+import os
 
-plt.savefig('imu_benchmark/plot/benchmark_f2.svg')
+os.makedirs('imu_benchmark/figures', exist_ok = True)
+
+plt.savefig('imu_benchmark/figures/benchmark_f3.svg')
 
 plt.show()
 

@@ -1,5 +1,5 @@
-# name: plot_benchmark_f4.py
-# description: plot figure 4 for the benchmark kinematics paper
+# name: plot_benchmark_f6.py
+# description: plot figure 6 for the benchmark kinematics paper
 # author: Vu Phan
 # date: 2025/02/26
 
@@ -926,8 +926,11 @@ ax7.set_ylabel(r'Knee F/E RMSD ($^\circ$)', fontsize = fontsize_label)
 
 # ax7.set_ylabel(r'Knee Flexion ($^o$)', fontsize = fontsize_label)
 
+import os
 
-plt.savefig('imu_benchmark/plot/benchmark_f4.svg')
+os.makedirs('imu_benchmark/figures', exist_ok = True)
+
+plt.savefig('imu_benchmark/figures/benchmark_f6.svg')
 
 plt.show()
 

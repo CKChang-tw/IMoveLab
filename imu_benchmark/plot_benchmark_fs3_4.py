@@ -1,5 +1,5 @@
-# name: plot_benchmark_f4_placement_detail.py
-# description: plot figure 4 for the benchmark kinematics paper
+# name: plot_benchmark_f3_4.py
+# description: plot figures 3 and 4 for the benchmark kinematics paper
 # author: Vu Phan
 # date: 2025/02/26
 
@@ -337,9 +337,6 @@ for subject in subject_list:
 
 
 
-
-
-
 # --- Plotting --- #
 from scipy.stats import spearmanr
 from scipy.optimize import curve_fit
@@ -445,25 +442,6 @@ ax6.set_xticks([0.2, 1, 2, 3, 4, 4.8])
 ax6.set_xticklabels(['', 'C1', 'C2', 'C3', 'C4', ''], fontsize = font_size)
 ax6.set_ylim([y_lim_min, 20])
 
-# ax6.set_ylabel(r'Knee F/E RMSD ($^\circ$)', fontsize = fontsize_label)
-# ax6.set_ylabel(r'Hip F/E RMSD ($^\circ$)', fontsize = fontsize_label)
-# ax6.set_ylabel(r'Ankle F/E RMSD ($^\circ$)', fontsize = fontsize_label)
-
-
-# # Example of placement during sit-to-stand (or sts)
-
-
-# ax7.spines['top'].set_visible(False)
-# ax7.spines['right'].set_visible(False)
-# ax7.spines['left'].set_position(('outward', 8))
-# ax7.spines['bottom'].set_position(('outward', 5))
-
-# ax7.set_ylabel(r'Knee Flexion ($^o$)', fontsize = fontsize_label)
-
-
-# plt.savefig('imu_benchmark/plot/benchmark_f4_' + selected_task_for_plot + '.svg')
-
-
 
 
 ax.plot(np.mean(mocap_list[C2], axis = 0), lw = 1.5, color = 'k', alpha = 0.8, linestyle = '--', label = 'Mocap')
@@ -530,7 +508,11 @@ ax.set_ylim([0, 120]); ax.set_yticks([0, 30, 60, 90, 120])
 fig.patch.set_facecolor([1, 1, 1, 0])
 ax.patch.set_facecolor([1, 1, 1, 0.5])
 
-plt.savefig('imu_benchmark/plot/benchmark_f4_' + selected_task_for_plot + '.svg')
+import os
+
+os.makedirs('imu_benchmark/figures', exist_ok = True)
+
+plt.savefig('imu_benchmark/figures/benchmark_fs4_' + selected_task_for_plot + '.svg')
 
 
 plt.show()

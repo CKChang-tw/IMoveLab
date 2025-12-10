@@ -1,5 +1,5 @@
-# name: plot_benchmark_f3.py
-# description: plot figure 3 of the benchmark kinematics paper
+# name: plot_benchmark_f5.py
+# description: plot figure 5 of the benchmark kinematics paper
 # author: Vu Phan
 # date: 2025/02/25
 
@@ -485,8 +485,10 @@ ax2.set_ylim([0, 15])
 ax2.set_yticks([0, 5, 10, 15])
 # ax2.set_yticklabels([])
 
+import os
+os.makedirs('imu_benchmark/figures', exist_ok = True)
 
-plt.savefig('imu_benchmark/plot/benchmark_f3_part1.svg')
+plt.savefig('imu_benchmark/figures/benchmark_f5_part1.svg')
 # plt.show()
 
 
@@ -717,8 +719,7 @@ ax5.annotate(r'(60$^{th}$-70$^{th}$ min)', xy = (31, 75), xytext = (31, 70), ha 
 
 
 
-# plt.savefig('imu_benchmark/plot/benchmark_f3.svg')
-plt.savefig('imu_benchmark/plot/benchmark_f3_part2.svg')
+plt.savefig('imu_benchmark/figures/benchmark_f5_part2.svg')
 
 plt.show()
 

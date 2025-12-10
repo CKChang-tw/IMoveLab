@@ -1,4 +1,4 @@
-# name: plot_benchmark_fs3_mag_correlation.py
+# name: plot_benchmark_fs6.py
 
 import pandas as pd 
 import numpy as np 
@@ -220,7 +220,11 @@ ax.annotate(r"(Spearman's $\rho$ = " + str(round(spearmanr(mag_dist_corr, rmsd_c
 # ax.annotate(r'R$_{Direct}$ = ' + str(round(spearmanr(mag_dist_corr, rmsd_corr)[0], 2)) + ' (p <0.001 *)', xy = (0.05, 0.9), xycoords = 'axes fraction', fontsize = fontsize_stats, color = 'gray')
 # ax.annotate(r'R$_{Constrained}$ = ' + str(round(spearmanr(mag_dist_corr, rmsd_corr_os)[0], 2)) + ' (p <0.001 *)', xy = (0.05, 0.8), xycoords = 'axes fraction', fontsize = fontsize_stats, color = 'gray')
 
-plt.savefig('imu_benchmark/plot/benchmark_fs3_mag_corr.svg')
+import os
+
+os.makedirs('imu_benchmark/figures', exist_ok = True)
+
+plt.savefig('imu_benchmark/figures/benchmark_fs6_mag_corr.svg')
 
 plt.show()
 
@@ -275,7 +279,7 @@ plt.show()
 #     # ax[i].spines['bottom'].set_color('lightgray')
 #     ax[i].patch.set_alpha(0.0)
 
-# # plt.savefig('imu_benchmark/plot/benchmark_fs3_mag_dist.svg')
+# # plt.savefig('imu_benchmark/figures/benchmark_fs6_mag_dist.svg')
 
 # plt.show()
 
