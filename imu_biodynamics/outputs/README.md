@@ -1,5 +1,56 @@
-# Directory Tree for Outputs from Experiment 4
+# Directory Tree for Outputs (Processed Data) from Experiment 4
 
-These will be provided to replicate plots in [the paper]() without needing to rerun everything.
+Follow the directory tree below to run the plotting code on your local machine without further modifications.
+
+```
+$ Directory tree
+.
+├── data\
+    └── HAKnee
+        ├── bm_ekf6d
+        │   ├── eval
+        │   │   ├── 1
+        │   │   │   ├── biplane
+        │   │   │   │   ├── knee_kinematics_l_ddrop_3.pkl
+        │   │   │   │   ├── knee_kinematics_l_run_1.pkl
+        │   │   │   │   ├── ...
+        │   │   │   │   └── knee_kinematics_r_shop_2.pkl
+        │   │   │   ├── mc10
+        │   │   │   │   ├── knee_kinematics_l_ddrop_3.pkl
+        │   │   │   │   ├── knee_kinematics_l_run_1.pkl
+        │   │   │   │   ├── ...
+        │   │   │   │   └── knee_kinematics_r_shop_2.pkl
+        │   │   │   ├── mocap
+        │   │   │   │   ├── knee_kinematics_l_ddrop_3.pkl
+        │   │   │   │   ├── knee_kinematics_l_run_1.pkl
+        │   │   │   │   ├── ...
+        │   │   │   │   └── knee_kinematics_r_shop_2.pkl
+        │   │   │   ├── rmsd_mc10_biiplane_l_ddrop_3.pkl
+        │   │   │   ├── ...
+        │   │   │   └── rmsd_mocap_biplane_r_shop_2.pkl
+        │   │   ├── 2
+        │   │   ├── ...
+        │   │   └── 18
+        │   └── ik
+        │       ├── 1
+        │       │   ├── mc10
+        │       │   │   ├── knee_kinematics_l_ddrop_1.pkl
+        │       │   │   ├── knee_kinematics_l_ddrop_2.pkl
+        │       │   │   ├── ...
+        │       │   │   └── knee_kinematics_r_shop_3.pkl
+        │       │   └── mocap
+        │       │       ├── knee_kinematics_l_ddrop_1.pkl
+        │       │       ├── knee_kinematics_l_ddrop_2.pkl
+        │       │       ├── ...
+        │       │       └── knee_kinematics_r_shop_3.pkl
+        │       ├── 2
+        │       ├── ...
+        │       └── 18
+        ├── bm_mad6d
+        ├── bm_mah6d
+        ├── bm_riann6d
+        └── bm_vqf6d
+```
+
 
 
