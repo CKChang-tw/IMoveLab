@@ -24,3 +24,10 @@ Run `eval.py` to obtain evaluation, but now both IMU and marker-based kinematics
 ```
 python eval.py
 ```
+
+## 📊 Visualization
+
+See `README.md` in the `outputs` folder to ensure the correct format of the processed data before plotting.
+
+Run `plot_benchmark_f7_biplane.py` files to plot figures.
+

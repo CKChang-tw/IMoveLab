@@ -49,3 +49,9 @@ python imu_benchmark/eval.py [--f_type F_TYPE] [--dim DIM] [--reference REFERENC
 
 Similarly, run `eval_long.py` (for **Experiment 2**) and `eval_mvn.py` (for **Experiment 3**). 
 
+## 📊 Visualization
+
+See `README.md` in the `outputs` folder to ensure the correct format of the processed data before plotting.
+
+Run `plot_benchmark_f*.py` files to plot figures.
+
