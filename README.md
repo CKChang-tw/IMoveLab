@@ -10,6 +10,12 @@
 
 This platform was initially created and validated for motion tracking of the lower body, but it can also be applied to the upper- or full-body motion tracking with some modifications.
 
+## 🚨 News
+- [x] IMU data from Experiments 1, 2, and 3 are now available on the [I-MOVE-23](https://sites.google.com/andrew.cmu.edu/i-move-23) page.
+- [ ] The graphical user interface for converting IMU data to lower-limb kinematics will be released soon.
+
+## 📂 Structure
+See `imu_benchmark` for the implementation associated with Experiments 1, 2, and 3 presented in the paper; `imu_biodynamics` for Experiment 4.
 
 ## ⚙️ Installation
 The code is tested with `Python 3.10` on `Ubuntu 24.04` and `MacOS`. We recommend creating environments with `conda` to run the code.
