@@ -31,9 +31,9 @@ See [Scripting in Python](https://opensimconfluence.atlassian.net/wiki/spaces/Op
 Run `python -m pip install -r requirements.txt` for other dependencies.
 
 ## 💾 Data
-The [I-MOVE-23](https://sites.google.com/andrew.cmu.edu/i-move-23) dataset is now available for public use. This contains the data of Experiments 1, 2, and 3 mentioned in the paper. You will need to send a request with your institutional email account to download.
+The [I-MOVE-23](https://sites.google.com/andrew.cmu.edu/i-move-23) dataset (Experiments 1, 2, and 3; see `imu_benchmark`) is now available for public use. This contains the data of Experiments 1, 2, and 3 mentioned in the paper. You will need to send a request with your institutional email account to download.
 
-> The [complete dataset](https://figshare.com/s/95a87e71c2e3f252a07f), including the validation study with biplane fluoroscopy, is shared privately with the reviewers, and will be made available upon publication of this manuscript.
+> The [complete dataset](https://figshare.com/s/95a87e71c2e3f252a07f), including the validation study with biplane fluoroscopy (Experiment 4; see `imu_biodynamics`), is shared privately with the reviewers, and will be made available upon publication of this manuscript.
 
 See `README.md` in the `imu_benchmark` or `imu_biodynamics` folder for how to store the data.
 
