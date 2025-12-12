@@ -1,6 +1,6 @@
 # Directory Tree for Data from Experiment 4
 
-Follow the directory tree below to run the code on your local machine without further modifications.
+Follow the directory tree below to run the code on your local machine.
 
 ```
 $ Directory tree
@@ -49,4 +49,9 @@ $ Directory tree
     └── TriggerTimes.xlsx
 ```
 
+In this folder, 
+- `IMUs` contains the IMU data (e.g., 3-axis angular velocities and 3-axis linear accelerations).
+- `Kinematics` contains skeletal kinematics of the knee derived from the ground-truth biplane fluoroscopy.
+- `Vicon` contains the labelled marker trajectories.
+- `TriggerTimes.xlsx` contain information for syncing IMU with marker-based & biplane data.
 

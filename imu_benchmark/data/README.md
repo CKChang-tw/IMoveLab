@@ -1,6 +1,6 @@
 # Directory Tree for Data from Experiments 1, 2, and 3
 
-Follow the directory tree below to run the code on your local machine without further modifications.
+Follow the directory tree below to run the code on your local machine.
 
 ```
 $ Directory tree
@@ -16,7 +16,7 @@ $ Directory tree
     │       ├── t0_static_pose_001.csv
     │       ├── t1_walking_001.csv
     │       ├── ...
-    │       └── t11_sts_001
+    │       └── t11_sts_001.csv
     ├── s3
     ├── s4
     ├── s4l
@@ -29,5 +29,5 @@ $ Directory tree
     └── s25
 ```
 
-Folders with names ended with the letter `l` (e.g., `s4` and `s4l`) contain data during the long walking trial (for **Experiment 2**).
+Folders with names ended with the letter `l` (e.g., `s4` and `s4l`) contain data collected during the long walking trial.
 

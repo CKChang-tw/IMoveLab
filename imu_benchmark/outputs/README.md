@@ -1,6 +1,6 @@
-# Directory Tree for Outputs (Processed Data) from Experiments 1, 2, and 3
+# Experiments 1, 2, and 3 Processed Data
 
-Follow the directory tree below to run the plotting code on your local machine without further modifications.
+Follow the directory tree below to run the plotting code on your local machine.
 
 ```
 $ Directory tree
@@ -80,6 +80,17 @@ $ Directory tree
         └── sync_info_s25_walking_x.pkl
 ```
 
+In this folder, 
+- `acceleration_sd` contains variance of accelerometry data.
+- `exercise_index` contains segmentation indices of each exercise for all participants. Of note, this folder is needed for evaluation codes.
+- `joint_angles` contains kinematics obtained from different sources, including `mocap` (marker-based), `mt` (IMU), `mvn` (IMU with the MVN biomechanical model), and `opensense` (IMU with the OpenSense biomechanical model).
+- `magnetic_sd` contains variance of magnetometer data.
+- `new_long_walk_opensense` contains IMU kinematics derived from using the OpenSense biomechanical model for long-duration trials.
+- `os_ik` IMU kinematics outputted from the OpenSense software before being stored in `joint_angles/opensense`.
+- `rmse` contains RMSDs calculated from various comparisons.
+- `rmse_long_walk` contains RMSDs calculated from various comparisons during the long-duration trials.
+- `run_time` contains execution time recorded when running different state-estimation filters.
+- `sync_info` stores syncing indices of IMU and marker-based data.
 
 
 

@@ -2,17 +2,11 @@
 
 # Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress
 
-[![preprint](https://img.shields.io/badge/preprint-link-red)](https://www.biorxiv.org/) <!-- update link for preprint -->
+[![preprint](https://img.shields.io/badge/preprint-link-red)]() <!-- update link for preprint -->
 [![data1](https://img.shields.io/badge/data-IMOVE23-brightgreen)](https://sites.google.com/andrew.cmu.edu/i-move-23) 
 [![data2](https://img.shields.io/badge/private_data-In_Review-yellow)](https://figshare.com/s/95a87e71c2e3f252a07f) 
 
-**IMULab** is a benchmark of state-estimation filters for tracking and studying human movements using inertial measurement units (IMUs). *A graphical user interface associated with this platform for no-code users will be released soon*.
-
-This platform was initially created and validated for motion tracking of the lower body, but it can also be applied to the upper- or full-body motion tracking with some modifications.
-
-## 🚨 News
-- [x] IMU data from Experiments 1, 2, and 3 are now available on the [I-MOVE-23](https://sites.google.com/andrew.cmu.edu/i-move-23) page.
-- [ ] The graphical user interface for converting IMU data to lower-limb kinematics will be released soon.
+**IMULab** is a workflow for state estimation and tracking of human movements with inertial measurement units (IMUs). A web app  for users who may not wish to interact with the code is also being developed and will be released no later than the acceptance/publication of this manuscript.
 
 ## 📂 Structure
 See `imu_benchmark` for the implementation associated with Experiments 1, 2, and 3 presented in the paper; `imu_biodynamics` for Experiment 4.
@@ -31,33 +25,13 @@ See [Scripting in Python](https://opensimconfluence.atlassian.net/wiki/spaces/Op
 Run `python -m pip install -r requirements.txt` for other dependencies.
 
 ## 💾 Data
-The [I-MOVE-23](https://sites.google.com/andrew.cmu.edu/i-move-23) dataset (Experiments 1, 2, and 3; see `imu_benchmark`) is now available for public use. This contains the data of Experiments 1, 2, and 3 mentioned in the paper. You will need to send a request with your institutional email account to download.
-
-> The [complete dataset](https://figshare.com/s/95a87e71c2e3f252a07f), including the validation study with biplane fluoroscopy (Experiment 4; see `imu_biodynamics`), is shared privately with the reviewers, and will be made available upon publication of this manuscript.
+The [complete dataset](https://figshare.com/s/95a87e71c2e3f252a07f) is available for reviewers on FigShare, and will be published upon the acceptance/publication of the manuscript.
 
 See `README.md` in the `imu_benchmark` or `imu_biodynamics` folder for how to store the data.
 
 ## 🚀 Run the Code
 See `README.md` in the `imu_benchmark` or `imu_biodynamics` folder for how to run the code.
 
-## 🙏 Acknowledgements
-We thank the authors of all the state-estimation filters included in this platform, for their contributions and for making their work open-sourced.
-
-## 📄 Citation
-If you use any part of the data or code, please cite [our paper]().
-```
-@ARTICLE{phan2025,  
-title   =   {Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress},
-author  =   {Phan, Vu and Li, Zhixiong and Meinders, Evy and Gale, Tom and Anderst, William and Ng-Thow-Hing, Julian and Khandan, Aminreza and Halilaj, Eni},  
-journal =   {In Submission},  
-year    =   {2025}  
-}  
-```
-
-If you find this repository helpful, do not hesitate to give it a ⭐.
-
-## ✉️ Contact
-Please contact Vu Phan (vuphan@andrew.cmu.edu) regarding any question and feedback.
 
 
 

@@ -25,7 +25,7 @@ python imu_benchmark/synchronizer.py [--subject SUBJECT] [--task TASK] [--do_mvn
 The code will run for all subjects (or tasks) if `subject` (or `task`) is not specified. Set `do_mvn` to process data collected with the MVN Analyze software (from **Experiment 3**).
 
 ### Get IK
-Run `main_ik.py` to obtain IMU (constrained if `` is set, otherwise direct) and marker-based kinematics (for **Experiment 1**).
+Run `main_ik.py` to obtain IMU (constrained if `do_opensense` is set, otherwise direct) and marker-based kinematics (for **Experiment 1**).
 ```
 python imu_benchmark/main_ik.py [--selected_setup SELECTED_SETUP] [--f_type F_TYPE] [--dim DIM] [--do_mocap] [--do_mvn] [--do_opensense] [--subject SUBJECT] [--task TASK]
 ```
@@ -51,7 +51,12 @@ Similarly, run `eval_long.py` (for **Experiment 2**) and `eval_mvn.py` (for **Ex
 
 ## 📊 Visualization
 
-See `README.md` in the `outputs` folder to ensure the correct format of the processed data before plotting.
+See `README.md` in the `outputs` folder to ensure to ensure that the data are formatted appropriately before plotting them.
 
-Run `plot_benchmark_f*.py` files to plot figures.
+If you do not wish obtain `outputs` from running the scripts above, you can also download the folder from FigShare and format it following the mentioned `README.md` file for visualization.
+
+Run `plot_benchmark_f<*>.py` files to plot figures, in which `<*>` stands for the figure index to be plotted. For example, 
+```
+python imu_benchmark/plot_benchmark_f3.py
+```
 
