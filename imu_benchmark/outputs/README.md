@@ -1,6 +1,8 @@
 # Experiments 1, 2, and 3 Processed Data
 
-Follow the directory tree below to run the plotting code on your local machine.
+This folder contains processed data outputted from running the code.
+
+However, if you wish to plot the data without running the code, you can download this folder from the FigShare link and follow the directory tree below to run the plotting code on your local machine.
 
 ```
 $ Directory tree
