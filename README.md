@@ -3,7 +3,6 @@
 # Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling Approaches Towards Future Progress
 
 [![preprint](https://img.shields.io/badge/preprint-link-red)]() <!-- update link for preprint -->
-[![data1](https://img.shields.io/badge/data-IMOVE23-brightgreen)](https://sites.google.com/andrew.cmu.edu/i-move-23) 
 [![data2](https://img.shields.io/badge/private_data-In_Review-yellow)](https://figshare.com/s/95a87e71c2e3f252a07f) 
 
 **IMULab** is a workflow for state estimation and tracking of human movements with inertial measurement units (IMUs). A web app  for users who may not wish to interact with the code is also being developed and will be released no later than the acceptance/publication of this manuscript.
