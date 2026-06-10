@@ -1,4 +1,4 @@
-![figure [pipeline]: Overview of Experiments 2 and 3](../figures/imovelab_pipeline_overview.gif)
+![figure [pipeline]: Overview of Experiments 2 and 3](../assets/imovelab_pipeline_overview.gif)
 
 # Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling and Validation Approaches Toward Future Progress
 
