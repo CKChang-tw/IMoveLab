@@ -41,7 +41,7 @@ IMoveLab is licensed under the [Carnegie Mellon Software License](https://github
 
 ## 📝 Citation
 ```
-Phan, V., Li, Z., Meinders, E., Gale, T., Anderst, W., Ng-Thow-Hing, J., Khandan, A., and Halilaj, E., Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling and Validation Approaches Toward Future Progress, Naturen Communications (2026).
+Phan, V., Li, Z., Meinders, E., Gale, T., Anderst, W., Ng-Thow-Hing, J., Khandan, A., and Halilaj, E., Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling and Validation Approaches Toward Future Progress, Nature Communications (2026).
 ```
 
 ## 📧 Contact
