@@ -1,17 +1,13 @@
 # name: calibration_mc10.py
 # description: calibration for MC10 sensors
-# author: Vu Phan
-# date: 2025/08/06
-
 
 
 import numpy as np 
 
-from numpy.linalg import norm, inv 
+from numpy.linalg import norm
 from sklearn.decomposition import PCA 
 from tqdm import tqdm 
 
-# from imu_benchmark.constants import constant_mt, constant_common
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from constants import constant_mc10, constant_common
@@ -20,14 +16,7 @@ from utils.mc10 import mc10_event
 
 # Get walking period for calibration
 def get_walking_4_calib(shank_walking_gyr_r):
-    ''' Get walking period for calibration 
-
-    Args:
-        + shank_walking_gyr_r (np.array): gyroscope data of the right shank during walking
-    
-    Returns:
-        + period (list of int): period of walking for calibration
-    '''
+    ''' Get walking period for calibration '''
 
     gait_events = mc10_event.detect_gait_events(shank_walking_gyr_r)
     
@@ -38,14 +27,9 @@ def get_walking_4_calib(shank_walking_gyr_r):
 
 # --- Get PCA axis --- #
 def get_pc1_ax_mc10(data):
-    ''' Get the rotation axis during walking (for thighs/shanks/feet) or squat (for pelvis) using PCA
 
-    Args:
-        + data (pd.DataFrame): walking data of a thigh/shank sensor or squat data of the pelvis sensor
-
-    Returns:
-        + pc1_ax (np.array): the first principal component of data
-    '''
+    ''' Get the rotation axis during walking (for thighs/shanks/feet) or squat (for pelvis) using PCA '''
+    
     data = data - np.mean(data, axis = 0)
     pca  = PCA(n_components = 3)
     pca.fit(data)
@@ -57,15 +41,9 @@ def get_pc1_ax_mc10(data):
 
 # --- Sensor-to-segment alignment (calibration) --- #
 def sensor_to_segment_mc10(data_static, data_walking, walking_period):
-    ''' Obtain transformation from segment-to-sensor
 
-    Args:
-        + data_static (dict of pd.DataFrame): static data for the vertical axis
-        + data_walking (dict of pd.DataFrame): walking data for thigh/shank/foot rotational axis
+    ''' Obtain transformation from segment-to-sensor '''
 
-    Returns:
-        + seg2sens (dict of pd.DataFrame): segment-to-sensor transformation
-    '''
     seg2sens = {}
 
     for sensor_name in tqdm(data_static.keys()):
@@ -99,15 +77,9 @@ def sensor_to_segment_mc10(data_static, data_walking, walking_period):
 
 # Correct random 6D orientation
 def correct_random_6D_orientation(initial_orientation, main_orientation_mc10, fs = constant_mc10.PROCESSING_RATE):
-    ''' Correct random 6D orientation
 
-    Args:
-        + initial_orientation (dict of quaternion): initial orientation of sensors
-        + main_orientation_mc10 (dict of quaternion): orientation of sensors
+    ''' Correct random 6D orientation '''
 
-    Returns:
-        + main_orientation_mc10_corrected (dict of quaternion): corrected orientation of sensors
-    '''
     sensor_transform = {}
     main_orientation_mc10_corrected = {}
 
@@ -126,6 +98,8 @@ def correct_random_6D_orientation(initial_orientation, main_orientation_mc10, fs
 
 
 def get_calib_imu_data(imu_data, seg2sens):
+
+    ''' Apply calibration to raw IMU data '''
     
     cal_imu_data = {}
 

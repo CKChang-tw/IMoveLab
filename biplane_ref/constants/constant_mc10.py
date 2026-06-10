@@ -1,4 +1,5 @@
 # name: constant_mc10.py
+# description: constants for processing the MC10 Biostamp IMU data
 
 
 # Physics
@@ -7,7 +8,6 @@ GRAV_ACC = 9.81 # m/s^2
 # Experimental setup
 DATA_SAMPLING_RATE = 250 # Hz
 PROCESSING_RATE    = 100 # Hz (resampled to 100 Hz)
-# PROCESSING_RATE    = 150 # Hz (resampled to 100 Hz)
 
 # Processing setup
 FILTER_CUTOFF_IMU = 20 # Hz
@@ -31,7 +31,9 @@ META_START_ID = 0
 META_STOP_ID = 1
 
 
-
+# For OpenSense
+MC10_TO_OPENSENSE_MAP = {'shank_r': 'tibia_r_imu', 'thigh_r': 'femur_r_imu',
+                         'shank_l': 'tibia_l_imu', 'thigh_l': 'femur_l_imu'}
 
 
 

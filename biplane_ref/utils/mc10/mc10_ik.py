@@ -1,12 +1,11 @@
 # name: mc10_ik.py 
+# description: supporting functions for IK of the MC10 Biostamp data
 
 
 import numpy as np
 import quaternion 
 
 from tqdm import tqdm
-
-from scipy.spatial.transform import Rotation as R
 
 import sys, os
 
@@ -17,7 +16,9 @@ from constants import constant_mc10, constant_common
 from utils.mc10 import sfa
 
 
+
 def get_mc10_orientation(mc10_data, f_type, fs = constant_mc10.PROCESSING_RATE, params = None):
+
     ''' get the sensor orientation (quaternion) from the IMU data '''
 
     print(f'Applying {f_type} filter to get sensor orientation (quaternion), fs = {fs} Hz ...')
@@ -35,6 +36,8 @@ def get_mc10_orientation(mc10_data, f_type, fs = constant_mc10.PROCESSING_RATE, 
             temp_estimate = sfa.apply_madgwick(gyr, acc, fs, params)
         elif f_type == 'EKF':
             temp_estimate = sfa.apply_ekf(gyr, acc, fs, params)
+        elif f_type == 'UKF':
+            temp_estimate = sfa.apply_ukf(gyr, acc, fs, params)
         elif f_type == 'RIANN':
             temp_estimate = sfa.apply_riann(gyr, acc, fs)
 
@@ -45,10 +48,12 @@ def get_mc10_orientation(mc10_data, f_type, fs = constant_mc10.PROCESSING_RATE, 
         else:
             mc10_orientation[sensor_name] = quaternion.as_quat_array(temp_estimate.Q)
             
+            
     return mc10_orientation
 
 
 def average_orientation(orientation_data):
+
     ''' average the sensor orientation (quaternion), typically over the static period '''
 
     orientation_avg = {}
@@ -56,10 +61,12 @@ def average_orientation(orientation_data):
     for sensor_name in orientation_data.keys():
         orientation_avg[sensor_name] = orientation_data[sensor_name].mean(axis=0)
     
+
     return orientation_avg
 
 
 def get_seg2sens_6D(static_orientation):
+
     ''' get the segment-to-sensor calibration for 6D filters based on the perfect standing assumption '''
 
     init_rot = np.array([[0, 0, 1], [1, 0, 0], [0, 1, 0]])
@@ -69,10 +76,13 @@ def get_seg2sens_6D(static_orientation):
     for sensor_name in static_orientation.keys():
         seg2sens[sensor_name] = init_orientation.conjugate() * static_orientation[sensor_name]
 
+
     return seg2sens
 
 
 def get_angles(o1, o2, s2s1, s2s2, calibration_flag = True):
+
+    ''' get the joint angles from the sensor orientations and segment-to-sensor calibrations '''
     
     N = o1.shape[0]
 
@@ -96,10 +106,13 @@ def get_angles(o1, o2, s2s1, s2s2, calibration_flag = True):
 
     assert angle_arr.shape == (N, 3), 'Incorrect data shape'
 
+
     return angle_arr
 
 
 def get_knee_kinematics_mc10(seg2sens, mc10_orientation):
+
+    ''' get the knee kinematics from the sensor orientations and segment-to-sensor calibrations '''
     
     knee_kinematics = {}
 
@@ -112,6 +125,7 @@ def get_knee_kinematics_mc10(seg2sens, mc10_orientation):
     knee_kinematics['knee_flexion_l']   = constant_common.IK_SIGN['knee_flexion_l'] * temp_knee_l[:, 0]
     knee_kinematics['knee_adduction_l'] = constant_common.IK_SIGN['knee_adduction_l'] * temp_knee_l[:, 1]
     knee_kinematics['knee_rotation_l']  = constant_common.IK_SIGN['knee_rotation_l'] * temp_knee_l[:, 2]
+
 
     return knee_kinematics
 

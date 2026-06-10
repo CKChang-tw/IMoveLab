@@ -1,4 +1,5 @@
 # name: mc10_processing.py
+# description: processing functions for the MC10 Biostamp data
 
 
 import numpy as np
@@ -12,14 +13,8 @@ from constants import constant_mc10, constant_common
 
 
 def format_data_columns(data):
-    ''' format the data columns
-    
-    Args:
-        data (pd.DataFrame): data
-    
-    Returns:
-        data (pd.DataFrame): formatted data
-    '''
+
+    ''' format the data columns '''
 
     data_columns = list(data.columns)
     data_columns = [column.split(' ')[0] for column in data_columns]
@@ -29,36 +24,23 @@ def format_data_columns(data):
 
     data.columns = data_columns
 
+
     return data
 
 
 def get_mc10_path(dataset, subject, sensor_name):
-    ''' get the path to the mc10 data
-    
-    Args:
-        dataset (str): dataset name, HAKnee or Navio
-        subject (int): subject number, check the constant_common.HA_SUBJECT_LIST or constant_common.NAVIO_SUBJECT_LIST for the valid subject numbers
-        sensor_name (str): sensor name, e.g., pelvis, thigh_r, thigh_l, shank_r, shank_l
 
-    Returns:
-        path (str): path to the mc10 data
-    '''
+    ''' get the path to the mc10 data '''
 
     path = os.path.join(constant_common.DATA_PATH, constant_common.IMU_PATH, dataset, str(subject).zfill(2), constant_mc10.SENSOR_NAME_MAP[sensor_name])
+
 
     return path
 
 
 def interpolate_frame_drop(data, timestamp):
-    ''' resample the gyro and accel data
-    
-    Args:
-        data (pd.DataFrame): data
-        timestamp (np.array): timestamp
 
-    Returns:
-        interpolated_data (pd.DataFrame): interpolated data
-    '''
+    ''' resample the gyro and accel data '''
 
     nan_arr = np.nan*np.ones(timestamp.shape[0])
     nan_frame = pd.DataFrame({'temp': nan_arr,}, index = timestamp)
@@ -69,18 +51,13 @@ def interpolate_frame_drop(data, timestamp):
     interpolated_data = interpolated_data.iloc[:, 0:-1]
     interpolated_data = interpolated_data.reset_index()
 
+
     return interpolated_data
 
 
 def load_data(path):
-    ''' load the data from the path
-    
-    Args:
-        path (str): path to the data
-    
-    Returns:
-        data_one_sensor (pd.DataFrame): data of one sensor
-    '''
+
+    ''' load the data from the path '''
 
     Rz = np.array([[-1, 0, 0], [0, -1, 0], [0, 0, 1]])
 
@@ -108,21 +85,13 @@ def load_data(path):
 
     data_one_sensor = pd.DataFrame(np.concatenate([timestamp, acc, gyr], axis = 1), columns = constant_mc10.IMU_DATA_HEADERS)
 
+
     return data_one_sensor
     
 
 def resample_data(data, ft, start_time, end_time):
-    ''' resample the data
-    
-    Args:
-        data (dict of pd.DataFrame): data, key is the sensor name, value is the data
-        ft (float): sampling frequency
-        start_time (float): start time
-        end_time (float): end time
-    
-    Returns:
-        resampled_data (dict of pd.DataFrame): resampled data, key is the sensor name, value is the resampled data
-    '''
+
+    ''' resample the data '''
 
     ts = 1*constant_mc10.TO_MICRO / ft
 
@@ -143,20 +112,13 @@ def resample_data(data, ft, start_time, end_time):
 
         resampled_data[sensor_name].columns = constant_mc10.IMU_DATA_HEADERS
 
+
     return resampled_data
 
 
 def sync_data(data):
-    ''' sync the data
-    
-    Args:
-        data (dict of pd.DataFrame): data, key is the sensor name, value is the data
-    
-    Returns:
-        synced_data (dict of pd.DataFrame): synced data, key is the sensor name, value is the synced data
-        late_start_time (float): late start time
-        early_stop_time (float): early stop time
-    '''
+
+    ''' sync the data '''
 
     late_start_time = 0
     early_stop_time = 0
@@ -185,19 +147,13 @@ def sync_data(data):
         synced_data[sensor_name] = data[sensor_name].iloc[duration_id, :]
         synced_data[sensor_name] = synced_data[sensor_name].reset_index(drop = True)
 
+
     return synced_data, late_start_time, early_stop_time
 
 
 def get_mc10_data(dataset, subject):
-    ''' get the mc10 data
 
-    Args:
-        dataset (str): dataset name, HAKnee or Navio
-        subject (int): subject number, check the constant_common.HA_SUBJECT_LIST or constant_common.NAVIO_SUBJECT_LIST for the valid subject numbers
-    
-    Returns:
-        mc10_data (dict of pd.DataFrame): mc10 data, key is the sensor name, value is the data
-    '''
+    ''' get the mc10 data '''
 
     mc10_data = {}
 
@@ -209,6 +165,7 @@ def get_mc10_data(dataset, subject):
     mc10_data, late_start_time, early_stop_time = sync_data(mc10_data)
 
     mc10_data = resample_data(mc10_data, constant_mc10.PROCESSING_RATE, late_start_time, early_stop_time)
+
 
     return mc10_data
 

@@ -1,7 +1,7 @@
 # name: mocap_processing.py
+# description: processing functions for the mocap data
 
 
-import c3d
 import ezc3d
 
 import pandas as pd
@@ -15,17 +15,8 @@ from constants import constant_common, constant_mocap
 
 
 def get_mocap_path(dataset, subject, test, task):
-    ''' get path to the mocap data 
-    
-    Args:
-        dataset (str): dataset name, HAKnee or Navio
-        subject (int): subject number, check the constant_common.HA_SUBJECT_LIST or constant_common.NAVIO_SUBJECT_LIST for the valid subject numbers
-        test (int): test number (1, 2,...)
-        task (EasyDict): task information, including side (l or r), trial number (1, 2,...), and task name (static, ddrop, sdrop, shop, run)
 
-    Returns:
-        path (str): path to the mocap data
-    '''
+    ''' get path to the mocap data '''
 
     if dataset == 'HAKnee':
         subject_str = 'Subject' + str(subject).zfill(2) if subject < 10 else 'Subject' + str(subject)
@@ -39,28 +30,16 @@ def get_mocap_path(dataset, subject, test, task):
             task_str = task.side.lower() + constant_common.NAVIO_TASK_MAPPING[task.task] + str(task.trial) 
 
     test_str    = 'Test' + str(test)
-    
 
     path = os.path.join(constant_common.DATA_PATH, constant_common.MOCAP_PATH, dataset, subject_str, test_str, task_str + constant_common.MOCAP_EXTENSION)
 
-    # print(path)
 
     return path
 
 
 def get_mocap_data(dataset, subject, test, task):
-    ''' get mocap data from c3d file
-    
-    Args:
-        dataset (str): dataset name, HAKnee or Navio
-        subject (int): subject number, check the constant_common.HA_SUBJECT_LIST or constant_common.NAVIO_SUBJECT_LIST for the valid subject numbers
-        test (int): test number (1, 2,...)
-        task (EasyDict): task information, including side (l or r), trial number (1, 2,...), and task name (static, ddrop, sdrop, shop, run)
 
-    Returns:
-        mocap_data (pd.DataFrame): mocap data
-        marker_list (list): list of (labelled) markers
-    '''
+    ''' get mocap data from c3d file '''
 
     path = get_mocap_path(dataset, subject, test, task); print(path); print()
 
@@ -70,8 +49,6 @@ def get_mocap_data(dataset, subject, test, task):
 
     marker_list = c3d_data['parameters']['POINT']['LABELS']['value']
     marker_list = [marker for marker in marker_list if "*" not in marker]
-
-    # breakpoint()
     
     # remove 'Subject:' if exists in marker_list
     for i in range(len(marker_list)):
@@ -94,29 +71,18 @@ def get_mocap_data(dataset, subject, test, task):
     mocap_data = pd.concat(marker_traj.values(), axis = 1)
 
     num_frames = mocap_data.shape[0]
-    # time       = np.arange(0, num_frames/constant_mocap.MOCAP_SAMPLING_RATE, 1/constant_mocap.MOCAP_SAMPLING_RATE)
     time       = np.arange(0, num_frames/fs, 1/fs)
     time       = pd.DataFrame(time, columns = ['Time'])
 
     mocap_data = pd.concat([time, mocap_data], axis = 1)
 
-    # mocap_data = mocap_lowpass_filter(mocap_data, fs, constant_mocap.FILTER_CUTOFF_MOCAP, fo = 4)
 
     return mocap_data, marker_list
     
 
 def mocap_lowpass_filter(mocap_data, fs, fc, fo = 4):
-    ''' lowpass filter the mocap data
-    
-    Args:
-        mocap_data (pd.DataFrame): mocap data
-        fs (float): sampling frequency
-        fc (float): cutoff frequency
-        fo (float): order of the filter
-    
-    Returns:
-        f_mocap_data (pd.DataFrame): lowpass filtered mocap data
-    '''
+
+    ''' lowpass filter the mocap data '''
     
     Wn   = fc*2/fs
     b, a = signal.butter(fo, Wn, btype = 'low')
@@ -125,19 +91,13 @@ def mocap_lowpass_filter(mocap_data, fs, fc, fo = 4):
     f_mocap_data            = pd.DataFrame(f_mocap_data, columns = mocap_data.columns)
     f_mocap_data.iloc[:, 0] = 1*mocap_data.iloc[:, 0]
     
+
     return f_mocap_data
 
 
 def mocap_resample(mocap_data, ft):
-    ''' resample the mocap data
-    
-    Args:
-        mocap_data (pd.DataFrame): mocap data
-        ft (float): target sampling frequency
-    
-    Returns:
-        r_mocap_data (pd.DataFrame): resampled mocap data
-    '''
+
+    ''' resample the mocap data '''
 
     ts        = 1/ft
     nan_id    = np.arange(mocap_data['Time'].to_numpy()[0], mocap_data['Time'].to_numpy()[-1], ts)
@@ -149,43 +109,29 @@ def mocap_resample(mocap_data, ft):
     temp_frame = temp_frame.interpolate(method = 'linear', limit_area = 'inside')
 
     interp_frame = temp_frame.loc[nan_id, :]
-    # interp_frame = interp_frame.iloc[1:-1, 0:-1]
     interp_frame = interp_frame.iloc[:, 0:-1]
 
-    # r_mocap_data         = 1*interp_frame.reset_index(drop = True)
     r_mocap_data         = 1*interp_frame.reset_index()
     r_mocap_data.columns = mocap_data.columns
+
 
     return r_mocap_data
 
 
 def get_average_mocap(mocap_data):
-    ''' get average mocap data
 
-    Args:
-        mocap_data (pd.DataFrame): mocap data
-    
-    Returns:
-        avg_mocap_data (pd.DataFrame): average mocap data
-    '''
+    ''' get average mocap data '''
 
-    # temp_dt = 1*mocap_data.mean(axis = 0)
     temp_dt = 1*mocap_data.mean(axis = 0, skipna = True)
     avg_mocap_data = pd.DataFrame(temp_dt.transpose().values.reshape(1, -1), columns = temp_dt.index)
+
 
     return avg_mocap_data
 
 
 def get_mocap_masking(mocap_data, dataset):
-    ''' get the mask of the valid mocap data
-    
-    Args:
-        mocap_data (pd.DataFrame): mocap data
-        dataset (str): dataset name, HAKnee or Navio
 
-    Returns:
-        mocap_masking (np.array): mask of the valid mocap data
-    '''
+    ''' get the mask of the valid mocap data '''
 
     if dataset == 'HAKnee':
         considered_marker_list = constant_mocap.HAKNEE_THIGH_CLUSTER_IK_LIST_R + constant_mocap.HAKNEE_SHANK_CLUSTER_IK_LIST_R + constant_mocap.HAKNEE_THIGH_CLUSTER_IK_LIST_L + constant_mocap.HAKNEE_SHANK_CLUSTER_IK_LIST_L
@@ -202,9 +148,12 @@ def get_mocap_masking(mocap_data, dataset):
         mocap_masking[mocap_masking == False] = np.nan
 
     elif dataset == 'Navio':
-        pass # TODO: implement this
+        pass # NOTE: not included in this study
+
 
     return mocap_masking
+
+
 
 
 

@@ -1,4 +1,5 @@
 # name: biplane_processing.py
+# description: functions for processing the biplane kinematics data (e.g., resampling, interpolation, etc.)
 
 
 import os, sys 
@@ -11,19 +12,12 @@ from constants import constant_common
 
 
 def get_biplane_session_from_task(task, dataset = 'HAKnee'):
-    ''' get the biplane session from the task information
 
-    Args:
-        task (EasyDict): task information, including side (l or r), trial number (1, 2,...), and task name (static, ddrop, sdrop, shop, run)
-        dataset (str): dataset name, HAKnee or Navio
-
-    Returns:
-        session (str): biplane session (A, B, C, D)
-    '''
+    ''' get the biplane session from the task information '''
 
     if dataset == 'Navio':
         
-        pass # TODO: implement for Navio dataset
+        pass # NOTE: not included in this project
 
     elif dataset == 'HAKnee':
         
@@ -40,17 +34,8 @@ def get_biplane_session_from_task(task, dataset = 'HAKnee'):
 
 
 def get_biplane_path(subject, dataset, test, task):
-    ''' get path to the biplane kinematics data
 
-    Args:
-        subject (int): subject number, check the constant_common.HA_SUBJECT_LIST or constant_common.NAVIO_SUBJECT_LIST for the valid subject numbers
-        dataset (str): dataset name, HAKnee or Navio
-        test (int): test number (1, 2,...)
-        task (EasyDict): task information, including side (l or r), trial number (1, 2,...), and task name (static, ddrop, sdrop, shop, run)
-
-    Returns:
-        path (str): path to the biplane kinematics data
-    '''
+    ''' get path to the biplane kinematics data '''
 
     subject_str = str(subject).zfill(2) 
     test_str    = 'Test' + str(test)
@@ -63,24 +48,12 @@ def get_biplane_path(subject, dataset, test, task):
 
 
 def get_biplane_knee_kinematics(subject, dataset, test, task, ft):
-    ''' get biplane knee kinematics
 
-    Args:
-        subject (int): subject number, check the constant_common.HA_SUBJECT_LIST or constant_common.NAVIO_SUBJECT_LIST for the valid subject numbers
-        dataset (str): dataset name, HAKnee or Navio
-        test (int): test number (1, 2,...)
-        task (EasyDict): task information, including side (l or r), trial number (1, 2,...), and task name (static, ddrop, sdrop, shop, run)
-        ft (int): target frequency (Hz) for resampling the biplane data
-
-    Returns:
-        knee_kinematics (dict): dictionary containing biplane knee kinematics (flexion, adduction, rotation)
-    '''
+    ''' get biplane knee kinematics '''
     
     path = get_biplane_path(subject, dataset, test, task)
-    # print(task.task)
 
     biplane_data = pd.read_csv(path, skiprows = 1)
-    # biplane_data = biplane_data[(biplane_data.iloc[:, -3] != 0) | (biplane_data.iloc[:, -2] != 0) | (biplane_data.iloc[:, -1] != 0)].reset_index(drop = True)
     biplane_data.columns.values[0] = 'Frame'
     biplane_data.columns.values[1] = 'Time'
 
@@ -90,7 +63,6 @@ def get_biplane_knee_kinematics(subject, dataset, test, task, ft):
         temp_frame['Frame'] = np.arange(0, start_frame)
         temp_frame['Time']  = np.arange(0, start_frame) * (1/150) # assuming the biplane data is collected at 150 Hz
         biplane_data = pd.concat([temp_frame, biplane_data], ignore_index = True)
-
 
     if task.task == 'static':
         pass
@@ -106,17 +78,8 @@ def get_biplane_knee_kinematics(subject, dataset, test, task, ft):
 
 
 def biplane_resample(biplane_data, ft):
-    ''' resample biplane data to a fixed frequency
 
-    Args:
-        biplane_data (pd.DataFrame): biplane data
-        ft (int): target frequency (Hz)
-
-    Returns:
-        r_biplane_data (pd.DataFrame): resampled biplane data
-    '''
-
-    # breakpoint()
+    ''' resample biplane data to a fixed frequency '''
 
     ts = 1/ft 
     nan_id    = np.arange(biplane_data['Time'].to_numpy()[0], biplane_data['Time'].to_numpy()[-1], ts)
@@ -128,7 +91,6 @@ def biplane_resample(biplane_data, ft):
     temp_frame = temp_frame.interpolate(method = 'linear', limit_area = 'inside')
 
     interp_frame = temp_frame.loc[nan_id, :]
-    # interp_frame = interp_frame.iloc[1:-1, 0:-1]
     interp_frame = interp_frame.iloc[:, 0:-1]
 
     r_biplane_data         = 1*interp_frame.reset_index()

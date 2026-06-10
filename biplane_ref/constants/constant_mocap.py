@@ -1,4 +1,5 @@
 # name: constant_mocap.py 
+# description: constants for processing the mocap data
 
 
 MOCAP_SAMPLING_RATE = 100 # Hz

@@ -1,7 +1,5 @@
 # name: constant_meta.py
 # description: meta information for the dataset
-# author: Vu Phan
-# date: 2025/08/06
 
 
 # --- HAKnee dataset --- #
@@ -13,14 +11,14 @@ STATIC_DURATION = {'1':  {'r': [329400, 329700], 'l': [241050, 241350]},
                    '6':  {'r': [120200, 120500], 'l': [265600, 265900]},
                    '9':  {'r': [125600, 125900], 'l': [222800, 223100]},
                    '10': {'r': [131800, 132100], 'l': [176600, 176900]},
-                #    '11': {'r': [], 'l': []}, --- IGNORE ---
                    '12': {'r': [129000, 129300], 'l': [205800, 206100]},
                    '13': {'r': [151500, 151800], 'l': [216600, 216900]},
-                   '14': {'r': [96500, 96800], 'l': [185500, 188800]},
-                   '15': {'r': [97500, 97800], 'l': [156800, 157100]},
+                   '14': {'r': [96500, 96800],   'l': [185500, 188800]},
+                   '15': {'r': [97500, 97800],   'l': [156800, 157100]},
                    '16': {'r': [133500, 133800], 'l': [196400, 196700]},
                    '17': {'r': [117000, 117300], 'l': [187800, 188100]},
                    '18': {'r': [127500, 127800], 'l': [220400, 220700]}}
+
 
 TASK_DURATION = {'1':  {'shop':  {'r': {'t1': [347500, 350500], 't2': [358000, 361000], 't3': [376000, 380000]},
                                   'l': {'t1': [260000, 266000], 't2': [286400, 290000], 't3': [310000, 320000]}},
@@ -58,7 +56,7 @@ TASK_DURATION = {'1':  {'shop':  {'r': {'t1': [347500, 350500], 't2': [358000, 3
                         'run':   {'r': {'t1': [600000, 622800], 't2': [641000, 647000], 't3': [650000, 656000]},
                                   'l': {'t1': [709400, 714000], 't2': [721000, 727000], 't3': [738000, 742650]}}},
 
-                 '5':  {'shop':  {'r': {'t1': [None, None], 't2': [None, None], 't3': [None, None]},
+                 '5':  {'shop':  {'r': {'t1': [164000, 168000], 't2': [176000, 181000], 't3': [192000, 196000]}, # do not have mocap timestamp, but can use biplane timestamp (UTC + offset 9000)
                                   'l': {'t1': [249000, 251000], 't2': [267000, 271000], 't3': [285340, 286500]}},
                         'sdrop': {'r': {'t1': [305000, 308000], 't2': [319800, 322600], 't3': [327600, 332000]},
                                   'l': {'t1': [336000, 340000], 't2': [350000, 355000], 't3': [368750, 370000]}},
@@ -93,15 +91,6 @@ TASK_DURATION = {'1':  {'shop':  {'r': {'t1': [347500, 350500], 't2': [358000, 3
                                   'l': {'t1': [372000, 375000], 't2': [381500, 383500], 't3': [387500, 389000]}},
                         'run':   {'r': {'t1': [513000, 517000], 't2': [529100, 533000], 't3': [538950, 542000]},
                                   'l': {'t1': [630000, 634000], 't2': [640800, 645000], 't3': [654250, 658000]}}},
-
-                #  '11': {'shop':  {'r': {'t1': [90000, 92500], 't2': [132000, 138000], 't3': [142000, 148000]},
-                #                   'l': {'t1': [165000, 168500], 't2': [175200, 179000], 't3': [186000, 188000]}},
-                #         'sdrop': {'r': {'t1': [213175, 215500], 't2': [223500, 225000], 't3': [230000, 232500]},
-                #                   'l': {'t1': [238360, 241000], 't2': [247000, 249500], 't3': [258500, 262000]}},
-                #         'ddrop': {'r': {'t1': [283000, 288000], 't2': [303500, 306000], 't3': [313000, 316000]},
-                #                   'l': {'t1': [353000, 357000], 't2': [362500, 365000], 't3': [374000, 376500]}},
-                #         'run':   {'r': {'t1': [497000, 502000], 't2': [514500, 518000], 't3': [521000, 526000]},
-                #                   'l': {'t1': [560560, 565000], 't2': [570500, 575000], 't3': [606000, 610000]}}},
 
                  '12': {'shop':  {'r': {'t1': [144000, 148000], 't2': [161000, 164000], 't3': [183000, 186000]},
                                   'l': {'t1': [218000, 221000], 't2': [231000, 234000], 't3': [243000, 249000]}},
@@ -164,16 +153,7 @@ TASK_DURATION = {'1':  {'shop':  {'r': {'t1': [347500, 350500], 't2': [358000, 3
                         'ddrop': {'r': {'t1': [357500, 360500], 't2': [365300, 368000], 't3': [372750, 377000]},
                                   'l': {'t1': [434200, 437000], 't2': [441400, 444000], 't3': [447800, 450000]}},
                         'run':   {'r': {'t1': [595000, 599000], 't2': [613000, 618000], 't3': [626000, 630000]},
-                                  'l': {'t1': [757300, 761000], 't2': [768800, 773000], 't3': [778350, 782000]}}},
-                                
-                #  '19': {'shop':  {'r': {'t1': [150000, 156000], 't2': [162000, 166000], 't3': [169350, 175000]},
-                #                   'l': {'t1': [196400, 200000], 't2': [206000, 208500], 't3': [220000, 225000]}},
-                #         'sdrop': {'r': {'t1': [250000, 255000], 't2': [260500, 265000], 't3': [268000, 273000]},
-                #                   'l': {'t1': [285000, 288500], 't2': [302500, 306000], 't3': [314000, 317000]}},
-                #         'ddrop': {'r': {'t1': [345000, 347500], 't2': [352000, 356000], 't3': [364900, 368000]},
-                #                   'l': {'t1': [434500, 437000], 't2': [445500, 447500], 't3': [452500, 455000]}},
-                #         'run':   {'r': {'t1': [620000, 624000], 't2': [631500, 635000], 't3': [641000, 644000]},
-                #                   'l': {'t1': [729000, 732000], 't2': [744000, 747000], 't3': [753000, 756000]}}}
+                                  'l': {'t1': [757300, 761000], 't2': [768800, 773000], 't3': [778350, 782000]}}}
                 }
 
 
@@ -185,15 +165,13 @@ WALKING_DURATION = {'1':  [676000, 692000],
                     '6':  [704000, 716000],
                     '9':  [646000, 662000],
                     '10': [488000, 501100],
-                    # '11': [473100, 486300],
                     '12': [630000, 647050],
                     '13': [526800, 539150],
                     '14': [534000, 548900],
                     '15': [488000, 502650],
                     '16': [524000, 535700],
                     '17': [518400, 523000],
-                    '18': [554600, 568400],
-                    # '19': [586600, 598700]
+                    '18': [554600, 568400]
                     }
 
 
@@ -211,14 +189,12 @@ STATIC_SIDE = {'1':  'l',
                '15': 'r',
                '16': 'r',
                '17': 'l',
-               '18': 'l',
-            #    '19': ''
+               '18': 'l'
                }
 
 
-VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
-                                    # 'l': [True, True, True]}, # 3rd trial may be wrong syncing
-                                    'l': [True, True, True]},
+VALID_COMPARISON = {'1':  {'shop':  {'r': [True, True, False],
+                                     'l': [True, True, True]},
                            'sdrop': {'r': [True, True, True],
                                      'l': [True, True, True]},
                            'ddrop': {'r': [True, True, True],
@@ -226,8 +202,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                            'run':   {'r': [False, True, True],
                                      'l': [True, True, True]}},
 
-                    '2':  {'shop': {'r': [True, True, True],
-                                    'l': [True, True, True]},
+                    '2':  {'shop':  {'r': [True, True, True],
+                                     'l': [True, True, True]},
                            'sdrop': {'r': [True, True, True],
                                      'l': [True, True, True]},
                            'ddrop': {'r': [True, True, True],
@@ -235,8 +211,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                            'run':   {'r': [True, True, True],
                                      'l': [True, True, True]}},
 
-                     '3':  {'shop': {'r': [True, True, True],
-                                     'l': [True, True, True]},
+                     '3':  {'shop':  {'r': [True, True, True],
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -244,8 +220,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, True]}},
 
-                     '4':  {'shop': {'r': [True, True, True],
-                                     'l': [True, True, True]},
+                     '4':  {'shop':  {'r': [True, True, True],
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -253,8 +229,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [False, True, True],
                                       'l': [True, True, True]}},
 
-                     '5':  {'shop': {'r': [True, True, True],
-                                     'l': [True, True, True]},
+                     '5':  {'shop':  {'r': [True, True, True],
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -262,8 +238,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, True]}},
 
-                     '6':  {'shop': {'r': [True, True, True],
-                                     'l': [True, True, False]},
+                     '6':  {'shop':  {'r': [True, True, True],
+                                      'l': [True, True, False]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -271,8 +247,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, True]}},
 
-                     '7':  {'shop': {'r': [False, False, False],
-                                     'l': [False, False, False]},
+                     '7':  {'shop':  {'r': [False, False, False],
+                                      'l': [False, False, False]},
                             'sdrop': {'r': [False, False, False],
                                       'l': [False, False, False]},
                             'ddrop': {'r': [False, False, False],
@@ -280,8 +256,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [False, False, False],
                                       'l': [False, False, False]}},
 
-                     '8':  {'shop': {'r': [False, False, False],
-                                     'l': [False, False, False]},
+                     '8':  {'shop':  {'r': [False, False, False],
+                                      'l': [False, False, False]},
                             'sdrop': {'r': [False, False, False],
                                       'l': [False, False, False]},
                             'ddrop': {'r': [False, False, False],
@@ -289,8 +265,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [False, False, False],
                                       'l': [False, False, False]}},
 
-                     '9':  {'shop': {'r': [True, True, True],
-                                     'l': [True, True, True]},
+                     '9':  {'shop':  {'r': [True, True, True],
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -298,8 +274,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, True]}},
 
-                     '10': {'shop': {'r': [True, True, True],
-                                     'l': [True, True, True]},
+                     '10': {'shop':  {'r': [True, True, True],
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -307,17 +283,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, False]}},
 
-                     '11': {'shop': {'r': [False, False, False],
-                                     'l': [False, False, False]},
-                            'sdrop': {'r': [False, False, False],
-                                      'l': [False, False, False]},
-                            'ddrop': {'r': [False, False, False],
-                                      'l': [False, False, False]},
-                            'run':   {'r': [False, False, False],
-                                      'l': [False, False, False]}},
-
-                     '12': {'shop': {'r': [True, True, True],   
-                                     'l': [True, True, True]},
+                     '12': {'shop':  {'r': [True, True, True],   
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -325,8 +292,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, True]}},
 
-                     '13': {'shop': {'r': [True, True, True],   
-                                     'l': [True, True, True]},
+                     '13': {'shop':  {'r': [True, True, True],   
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -334,8 +301,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, True]}},
 
-                     '14': {'shop': {'r': [True, True, True],   
-                                     'l': [True, True, True]},
+                     '14': {'shop':  {'r': [True, True, True],   
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -343,8 +310,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [False, False, False],
                                       'l': [True, False, False]}},
 
-                     '15': {'shop': {'r': [True, True, True],   
-                                     'l': [True, True, True]},
+                     '15': {'shop':  {'r': [True, True, True],   
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -352,8 +319,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, True]}},
 
-                     '16': {'shop': {'r': [True, True, True],   
-                                     'l': [True, True, True]},
+                     '16': {'shop':  {'r': [True, True, True],   
+                                      'l': [True, True, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -361,8 +328,8 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [True, True, True],
                                       'l': [True, True, True]}},
 
-                     '17': {'shop': {'r': [True, True, True],   
-                                     'l': [True, False, True]},
+                     '17': {'shop':  {'r': [True, True, True],   
+                                      'l': [True, False, True]},
                             'sdrop': {'r': [True, True, True],
                                       'l': [True, True, True]},
                             'ddrop': {'r': [True, True, True],
@@ -370,43 +337,15 @@ VALID_COMPARISON = {'1':  {'shop': {'r': [True, True, False],
                             'run':   {'r': [False, True, False],
                                       'l': [False, False, True]}},
 
-                     '18': {'shop': {'r': [True, True, True],   
-                                     'l': [True, False, True]},
+                     '18': {'shop':  {'r': [True, True, True],   
+                                      'l': [True, False, True]},
                             'sdrop': {'r': [True, True, True],
-                                      'l': [True, False, True]}, # not sure the 2nd trial is segmented correctly (IMU was surprising off)
+                                      'l': [True, False, True]}, 
                             'ddrop': {'r': [True, False, True],
                                       'l': [True, True, True]},
                             'run':   {'r': [False, True, False],
-                                      'l': [False, True, True]}},
-
-                     '19': {'shop': {'r': [False, False, False],   
-                                     'l': [False, False, False]},
-                            'sdrop': {'r': [False, False, False],
-                                      'l': [False, False, False]},
-                            'ddrop': {'r': [False, False, False],
-                                      'l': [False, False, False]},
-                            'run':   {'r': [False, False, False],
-                                      'l': [False, False, False]}}
+                                      'l': [False, True, True]}}
                   }
-
-# --- Navio dataset --- #
-# TODO: add information for Navio dataset
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
