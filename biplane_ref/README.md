@@ -1,38 +1,49 @@
-![figure [pipeline]: Overview of Experiments 1, 2, and 3](../figures/experiment_4.png)
+![figure [pipeline]: Overview of Experiment 1](../assets/experiment_1.png)
 
-# Experiment 4 (with Ground-Truth Biplane Fluoroscopy)
+# Experiment 1 (Accuracy Evaluation with Ground-Truth Biplane Fluoroscopy)
 
-This folder contains the implementation to process data of Experiment 4.
+This folder contains the implementation to process data of Experiment 1.
 
 ## 💾 Data
-After downloading data from FigShare, follow the directory tree in `imu_biodynamics/data/README.md` to run the code.
+After downloading data from FigShare, structuring your data folders following the directory tree in `biplane_ref/data/README.md` to run the code.
 
 ## 🚀 Run the Code
-Run `main_mc10.py` to obtain IMU kinematics.
+
+### Get kinematics
+Use `main_ik.py` to obtain inertial or marker-based kinematics. For example, 
 ```
-python main_mc10.py
+python main_ik.py --filter_type VQF
 ```
 
-Run `main_mocap.py` to obtain marker-based kinematics.
-```
-python main_mocap.py
-```
+This command does batch processing for data from all available subjects, tasks, trials, and captured sides (e.g., left or right) with the `VQF` filter. If you would like to obtain inertial kinematics with different approaches, specifically, IMoveLab constraint feedback or OpenSense, simply add `--do_cf` or `--do_opensense`, respectively. 
 
-Run `eval.py` to obtain evaluation of IMU and marker-based kinematics against ground-truth biplane fluoroscopy.
+For marker-based kinematics, run
 ```
-python eval.py
+python main_ik.py --do_mocap
 ```
 
-Outputs from running these scripts are saved in the `outputs` folder.
+Kinematics estimation for specific trials is also supported by adding details (see `main_ik.py` for more information).
 
-## 📊 Visualization
+Outputs from running these scripts will be saved in the `outputs` folder. See `biplane_ref/outputs/README.md` for the structure of this folder.
 
-See `README.md` in the `outputs` folder to ensure to ensure that the data are formatted appropriately before plotting them.
-
-If you do not wish obtain `outputs` from running the scripts above, you can also download the folder from FigShare and format it following the mentioned `README.md` file for visualization.
-
-Run `plot_benchmark_f7_biplane.py` to plot the figure.
+### Evaluate performance
+Use `main_eval.py` to evaluate IMU kinematics using marker-based kinematics as the ground truth.
 ```
-python plot_benchmark_f7_biplane.py
+python main_eval.py 
 ```
+
+Add `do_cf` or `do_opensense` to evaluate kinematics obtained with biomechanical modeling methods.
+
+### Tune filters (optional)
+We provide a script, named `main_tuning.py`, to help tune filters with grid search. For example,
+```
+python main_tuning.py --filter_type VQF 
+```
+
+Different filter types can be tuned. 
+
+Add `do_eval` to evaluate performance of different sets of parameters, and then, `check_eval` to get the parameters with the optimal performance.
+
+This is optional, and you can always tune your filters with a different method.
+
 

@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--filter_type', type = str, default = 'VQF') # 'VQF', 'MAH', 'MAD', 'EKF', 'RIANN'
     parser.add_argument('--dim', type = str, default = '6d') # only '6d' is supported for MC10 IK
 
-    parser.add_argument('--do_eval', action = 'store_true') # whether to run OpenSense IK
+    parser.add_argument('--do_eval', action = 'store_true') # get error for tuning parameters
 
     parser.add_argument('--check_eval', action = 'store_true') # inspect and save evaluation results (only after tuning & evaluation are done)
 
