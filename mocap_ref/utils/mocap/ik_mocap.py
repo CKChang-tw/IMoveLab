@@ -18,12 +18,16 @@ def get_transformation(vx, vy, vz, origin):
     
     ''' Obtain the transformation matrix '''
 
-    fx  = np.append(vx/norm(vx), 0)
-    fy  = np.append(vy/norm(vy), 0)
-    fz  = np.append(vz/norm(vz), 0)
-    pos = np.append(origin, 1)
+    if norm(vx) == 0 or norm(vy) == 0 or norm(vz) == 0: # handle missing data causing NaN values in the axes
+        transformation = np.eye(4)
 
-    transformation = np.transpose([fx, fy, fz, pos])
+    else:
+        fx  = np.append(vx/norm(vx), 0)
+        fy  = np.append(vy/norm(vy), 0)
+        fz  = np.append(vz/norm(vz), 0)
+        pos = np.append(origin, 1)
+
+        transformation = np.transpose([fx, fy, fz, pos])
 
     return transformation
 
