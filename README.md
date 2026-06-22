@@ -4,9 +4,9 @@
 
 # Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling and Validation Approaches Toward Future Progress
 
-[![paper](https://img.shields.io/badge/paper-link_(tbd)-green)]() <!-- update link for preprint -->
+[![paper](https://img.shields.io/badge/paper-link_(coming_soon)-green)]() <!-- update link for preprint -->
 [![app](https://img.shields.io/badge/app-IMoveLab-blue)](https://imovelab.org) 
-[![data2](https://img.shields.io/badge/data-link-yellow)](https://figshare.com/s/95a87e71c2e3f252a07f) 
+[![data2](https://img.shields.io/badge/data-link_(coming_soon)-yellow)]() 
 
 **IMoveLab** is a workflow for human motion tracking with inertial measurement units (IMUs). A web app for users who may not wish to interact with the code is also being developed and available at [IMoveLab](https://imovelab.org).
 
@@ -40,9 +40,7 @@ IMoveLab is licensed under the [Carnegie Mellon Software License](https://github
 
 
 ## 📝 Citation
-```
-Phan, V., Li, Z., Meinders, E., Gale, T., Anderst, W., Ng-Thow-Hing, J., Khandan, A., and Halilaj, E., Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling and Validation Approaches Toward Future Progress, Nature Communications (2026).
-```
+Coming soon.
 
 ## 📧 Contact
 Please reach out to Vu Phan (vuphan@andrew.cmu.edu) or Eni Halilaj (ehalilaj@andrew.cmu.edu) for any questions regarding this work.
