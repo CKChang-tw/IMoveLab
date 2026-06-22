@@ -2,7 +2,7 @@
   <img src="assets/imovelab_pipeline_overview.gif"/>
 </div>
 
-# Inertial Motion Tracking Matches Marker-Based Tracking Accuracy: Rethinking Modeling and Validation Approaches Toward Future Progress
+# Biomechanics-Informed Inertial Tracking Achieves the Accuracy of Marker-Based Kinematics
 
 [![paper](https://img.shields.io/badge/paper-link_(coming_soon)-green)]() <!-- update link for preprint -->
 [![app](https://img.shields.io/badge/app-IMoveLab-blue)](https://imovelab.org) 
