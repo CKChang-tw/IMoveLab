@@ -1,4 +1,4 @@
-![figure [pipeline]: Overview of Experiment 1](../assets/experiment_1.png)
+![figure [pipeline]: Overview of Experiment 1](../assets/experiment_1.jpg)
 
 # Experiment 1 (Accuracy Evaluation with Ground-Truth Biplane Fluoroscopy)
 

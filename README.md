@@ -5,10 +5,9 @@
 # Biomechanics-Informed Inertial Tracking Achieves the Accuracy of Marker-Based Kinematics
 
 [![paper](https://img.shields.io/badge/paper-link_(coming_soon)-green)]() <!-- update link for preprint -->
-[![app](https://img.shields.io/badge/app-IMoveLab-blue)](https://imovelab.org) 
-[![data2](https://img.shields.io/badge/data-link_(coming_soon)-yellow)]() 
+[![data](https://img.shields.io/badge/data-link-yellow)](https://figshare.com/s/3b31b5f932b865e52ad3) 
 
-**IMoveLab** is a workflow for human motion tracking with inertial measurement units (IMUs). A web app for users who may not wish to interact with the code is also being developed and available at [IMoveLab](https://imovelab.org).
+**IMoveLab** is a workflow for human motion tracking with inertial measurement units (IMUs). 
 
 ## 📂 Structure
 See `biplane_ref` for the implementation associated with Experiment 1 presented in the paper; `mocap_ref` for Experiments 2 and 3.
@@ -27,7 +26,7 @@ See [AHRS](https://ahrs.readthedocs.io/en/latest/installation.html), [VQF](https
 See [Scripting in Python](https://opensimconfluence.atlassian.net/wiki/spaces/OpenSim/pages/53085346/Scripting+in+Python) regarding the `opensim` package for OpenSense biomechanical constrained inverse kinematics.
 
 ## 💾 Data
-The dataset is available on [FigShare](https://figshare.com/s/95a87e71c2e3f252a07f).
+The dataset is available on [FigShare](https://figshare.com/s/3b31b5f932b865e52ad3).
 
 See `README.md` in the `biplane_ref` or `mocap_ref` folder for how to store the data.
 

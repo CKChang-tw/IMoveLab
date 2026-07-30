@@ -1,4 +1,4 @@
-![figure [pipeline]: Overview of Experiments 2 and 3](../assets/experiments_2_and_3.png)
+![figure [pipeline]: Overview of Experiments 2 and 3](../assets/experiments_2_and_3.jpg)
 
 # Experiments 2 and 3 (Drift Evaluation with Ground-Truth Marker-Based Motion Capture)
 
