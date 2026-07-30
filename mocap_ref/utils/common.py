@@ -116,27 +116,30 @@ def get_filter_params(f_type, dim):
     return f_params
 
 
-def get_filter_params_cf(f_type):
+def get_filter_params_cf(f_type, dim = '6D'):
 
     ''' Get the tuned parameters of the filter with constraint feedback '''
 
-    if f_type.upper() == 'RIANN':
-        f_params = None 
-    
-    elif f_type.upper() == 'Xsens':
+    f_params = None
+
+    if f_type.upper() in ['RIANN', 'XSENS']:
         f_params = None
-    
+
     elif f_type.upper() == 'MAD':
-        f_params = [0.4]
+        f_params = [0.04] if dim.upper() == '9D' else [0.4]
 
     elif f_type.upper() == 'MAH':
-        f_params = [1, 1.5]
+        f_params = [0.7, 0.05] if dim.upper() == '9D' else [1, 1.5]
 
     elif f_type.upper() == 'EKF':
-        f_params = [0.02, 0.03, 0.05] 
+        f_params = [0.02, 0.03, 0.05]
 
     elif f_type.upper() == 'VQF':
-        f_params = [0.7, 19]
+        if dim.upper() == '9D':
+            f_params = [2.5, 19]
+            
+        else:
+            f_params = [0.7, 19]
 
     return f_params
 

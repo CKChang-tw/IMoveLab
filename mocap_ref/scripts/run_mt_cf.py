@@ -4,9 +4,10 @@
 # NOTE: no support for Xsens prietary and RIANN filters due to no access to the hidden states for feedback
 
 
-import numpy as np 
+import numpy as np
 import quaternion
 import pickle
+import traceback
 
 import os, sys
 sys.path.append(os.path.abspath('mocap_ref/'))
@@ -34,7 +35,7 @@ def mt_ik(selected_setup, f_type, dim, subject, task, source = 'mt'):
 
     for f_type in filter_list:
         print('*** Filter ' + f_type)
-        filter_params_set = [common.get_filter_params_cf(f_type)] 
+        filter_params_set = [common.get_filter_params_cf(f_type, dim)]
 
         print('=' *50)
         print(f'Running MTw IK with filter {f_type} and dim {dim} ...')
@@ -71,6 +72,7 @@ def mt_ik(selected_setup, f_type, dim, subject, task, source = 'mt'):
 
                 seg2sens = calibration_mt.sensor_to_segment_mt(data_static_mt, data_walking_mt, walking_period, data_jumping_mt, jumping_period, selected_setup)
 
+                initial_orientation = None
                 if dim.upper() == '6D':
                     print('(Perfect standing assumption for 6D filters)')
                     initial_orientation = {}
@@ -85,10 +87,7 @@ def mt_ik(selected_setup, f_type, dim, subject, task, source = 'mt'):
                         data_main_mt = preprocessing_mt.match_data_mt(data_main_mt)
                         
                         print('- Estimate joint angles')
-                        if dim.upper() == '6D':
-                            orientation_mt, time_mt = ik_mt.get_imu_orientation_mt(data_main_mt, f_type = f_type, initial_orientation = initial_orientation, seg2sens = seg2sens, fs = fs_processing, dim = dim.upper(), params = f_params, get_time = True, cf_flag = True)
-                        else:
-                            orientation_mt, time_mt = ik_mt.get_imu_orientation_mt(data_main_mt, f_type = f_type, fs = fs_processing, dim = dim.upper(), params = f_params, get_time = True, cf_flag = True)
+                        orientation_mt, time_mt = ik_mt.get_imu_orientation_mt(data_main_mt, f_type = f_type, initial_orientation = initial_orientation, seg2sens = seg2sens, fs = fs_processing, dim = dim.upper(), params = f_params, get_time = True, cf_flag = True)
 
                         ja_mt = ik_mt.get_all_ja_mt(seg2sens, orientation_mt)
 
@@ -140,8 +139,12 @@ def mt_ik(selected_setup, f_type, dim, subject, task, source = 'mt'):
 
                         print('\n\n\n\n\n')
 
-                    except:
+                    except Exception:
                         print('*** Error in processing ' + selected_task)
+                        traceback.print_exc()
+
+
+
 
 
 

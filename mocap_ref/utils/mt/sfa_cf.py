@@ -9,7 +9,7 @@ import time
 from ahrs.filters import Mahony, Madgwick, EKF
 from vqf import PyVQF
 from riann.riann import RIANN
-from ahrs.common.orientation import acc2q
+from ahrs.common.orientation import acc2q, am2q, ecompass
 from scipy.spatial.transform import Rotation as R
 
 from constants import constant_common
@@ -18,41 +18,59 @@ from constants import constant_common
 # NOTE: no constraint feedback for Xsens or RIANN as they don't provide access to the hidden states for feedback
 
 
-def init_orientation_ahrs(data_main_mt, num_samples, use_acc=True):
+def init_orientation_ahrs(data_main_mt, num_samples, use_acc=True, use_mag=False, f_type=None):
 
-    ''' get the initial orientation for (AHRS) state-estimation filters based on accelerometer data at the first timestep (perfect standing assumption) '''
+    ''' get the initial orientation for (AHRS) state-estimation filters
+    '''
 
     orientation = {}
 
     for sensor_name in data_main_mt.keys():
-        
+
         orientation[sensor_name] = np.zeros((num_samples, 4))
-        
-        if use_acc:
+
+        if use_mag:
             acc0 = data_main_mt[sensor_name].loc[0, ['Acc_X','Acc_Y','Acc_Z']].to_numpy()
-            orientation[sensor_name][0] = acc2q(acc0) 
+            mag0 = data_main_mt[sensor_name].loc[0, ['Mag_X','Mag_Y','Mag_Z']].to_numpy()
+
+            if f_type == 'MAD':
+                orientation[sensor_name][0] = ecompass(acc0, mag0, frame = 'NED', representation = 'quaternion')
+            else:
+                orientation[sensor_name][0] = am2q(acc0, mag0, frame = 'ENU')
+
+        elif use_acc:
+            acc0 = data_main_mt[sensor_name].loc[0, ['Acc_X','Acc_Y','Acc_Z']].to_numpy()
+            orientation[sensor_name][0] = acc2q(acc0)
 
         else:
-            orientation[sensor_name][0] = np.array([1, 0, 0, 0]) 
+            orientation[sensor_name][0] = np.array([1, 0, 0, 0])
 
     return orientation
 
 
-def one_step_update_ahrs(filter, f_type, data, Q, sensor_name, t):
+def one_step_update_ahrs(filter, f_type, data, Q, sensor_name, t, use_mag = False):
 
-    ''' get the next orientation using AHRS state-estimation filters '''
+    ''' get the next orientation using AHRS state-estimation filters
+    '''
 
     acc_t = data[sensor_name].loc[t, ['Acc_X','Acc_Y','Acc_Z']].to_numpy()
     gyr_t = data[sensor_name].loc[t, ['Gyr_X','Gyr_Y','Gyr_Z']].to_numpy()
+    mag_t = data[sensor_name].loc[t, ['Mag_X','Mag_Y','Mag_Z']].to_numpy() if use_mag else None
 
     if f_type in ['MAD', 'MAH']:
         start_time = time.time()
-        Q_ = filter.updateIMU(Q, gyr = gyr_t, acc = acc_t)
+        if use_mag:
+            Q_ = filter.updateMARG(Q, gyr = gyr_t, acc = acc_t, mag = mag_t)
+        else:
+            Q_ = filter.updateIMU(Q, gyr = gyr_t, acc = acc_t)
         time_update = time.time() - start_time
 
     elif f_type == 'EKF':
         start_time = time.time()
-        Q_ = filter.update(Q, gyr = gyr_t, acc = acc_t)
+        if use_mag:
+            Q_ = filter.update(Q, gyr = gyr_t, acc = acc_t, mag = mag_t)
+        else:
+            Q_ = filter.update(Q, gyr = gyr_t, acc = acc_t)
         time_update = time.time() - start_time
 
     return Q_, time_update
@@ -223,10 +241,32 @@ def correct_nonsagittal_knee(joint_quat, seg2sens, joint_aligned, sensor_transfo
     return corrected_joint_aligned, corrected_joint_raw
 
 
+def inject_correction(vqf_filter, corrected_raw, use_mag = False):
+
+    ''' force a VQF filter to report corrected_raw as its current orientation '''
+
+    state  = vqf_filter.state
+    target = corrected_raw/np.linalg.norm(corrected_raw)
+
+    if use_mag:
+        target = vqf_filter.quatApplyDelta(target, -state['delta'])
+
+    state['accQuat'] = vqf_filter.quatMultiply(target, vqf_filter.quatConj(state['gyrQuat']))
+    vqf_filter.state = state
+
+
 def apply_vqf_cf(data_main_mt, seg2sens, initial_orientation, dim = '6D', fs = 100, params = None):
 
     ''' Apply VQF with constraint feedback to get corrected orientation '''
-    
+
+    dim     = dim.upper()
+    use_mag = (dim == '9D')
+
+    if use_mag:
+        for sensor_name in data_main_mt.keys():
+            assert set(['Mag_X', 'Mag_Y', 'Mag_Z']).issubset(data_main_mt[sensor_name].columns), \
+                f'9D constraint feedback needs magnetometer data, missing for {sensor_name}'
+
     num_static_samples = constant_common.STATIC_STANDING_PERIOD*fs
     num_samples        = len(data_main_mt['pelvis']['Acc_X'])
 
@@ -251,7 +291,8 @@ def apply_vqf_cf(data_main_mt, seg2sens, initial_orientation, dim = '6D', fs = 1
                 acc_t = data_main_mt[sensor_name].loc[phantom_timestep, ['Acc_X','Acc_Y','Acc_Z']].to_numpy()
 
                 filter[sensor_name].update(gyr = gyr_t, acc = acc_t)
-                filter_raw[sensor_name][phantom_timestep] = 1*filter[sensor_name].getQuat6D()
+                filter_raw[sensor_name][phantom_timestep] = 1*(filter[sensor_name].getQuat9D() if use_mag
+                                                               else filter[sensor_name].getQuat6D())
 
     timestep = 0
 
@@ -260,7 +301,10 @@ def apply_vqf_cf(data_main_mt, seg2sens, initial_orientation, dim = '6D', fs = 1
 
     # apply the sensor transform to the whole trial
     for sensor_name in data_main_mt.keys():
-        sensor_transforms[sensor_name] = get_sensor_transform(initial_orientation[sensor_name], filter_raw[sensor_name], num_static_samples)
+        if use_mag:
+            sensor_transforms[sensor_name] = quaternion.quaternion(1.0, 0.0, 0.0, 0.0)
+        else:
+            sensor_transforms[sensor_name] = get_sensor_transform(initial_orientation[sensor_name], filter_raw[sensor_name], num_static_samples)
 
         filter_aligned[sensor_name] = 1*quaternion.as_quat_array(filter_raw[sensor_name])
         for k in range(num_samples):
@@ -283,11 +327,21 @@ def apply_vqf_cf(data_main_mt, seg2sens, initial_orientation, dim = '6D', fs = 1
             gyr_t = data_main_mt[sensor_name].loc[timestep, ['Gyr_X','Gyr_Y','Gyr_Z']].to_numpy()
             acc_t = data_main_mt[sensor_name].loc[timestep, ['Acc_X','Acc_Y','Acc_Z']].to_numpy()
 
-            start_time = time.time()
-            filter[sensor_name].update(gyr = gyr_t, acc = acc_t)
-            time_mt['filtering'][sensor_name].append(time.time() - start_time)
+            if use_mag:
+                mag_t = data_main_mt[sensor_name].loc[timestep, ['Mag_X','Mag_Y','Mag_Z']].to_numpy()
 
-            filter_raw[sensor_name][timestep] = 1*filter[sensor_name].getQuat6D()
+                start_time = time.time()
+                filter[sensor_name].update(gyr = gyr_t, acc = acc_t, mag = mag_t)
+                time_mt['filtering'][sensor_name].append(time.time() - start_time)
+
+                filter_raw[sensor_name][timestep] = 1*filter[sensor_name].getQuat9D()
+
+            else:
+                start_time = time.time()
+                filter[sensor_name].update(gyr = gyr_t, acc = acc_t)
+                time_mt['filtering'][sensor_name].append(time.time() - start_time)
+
+                filter_raw[sensor_name][timestep] = 1*filter[sensor_name].getQuat6D()
 
             filter_aligned[sensor_name][timestep] = 1*quaternion.as_quat_array(filter_raw[sensor_name][timestep])
             filter_aligned[sensor_name][timestep] = sensor_transforms[sensor_name] * filter_aligned[sensor_name][timestep]
@@ -303,30 +357,21 @@ def apply_vqf_cf(data_main_mt, seg2sens, initial_orientation, dim = '6D', fs = 1
             corrected_adaptor_aligned, corrected_adaptor_raw = correct_heading(joint_quat, seg2sens, filter_aligned, sensor_transforms, timestep, joint = 'hip_r', prox = 'pelvis', dist = 'thigh_r', alpha = constant_common.KAPPA_HIP, cons_flag = cons_flag)
             filter_aligned['thigh_r'][timestep] = 1*corrected_adaptor_aligned
             filter_raw['thigh_r'][timestep]     = 1*corrected_adaptor_raw
-            state_thigh_r            = filter['thigh_r'].state
-            gyr_quat_thigh_r         = state_thigh_r['gyrQuat']
-            state_thigh_r['accQuat'] = filter['thigh_r'].quatMultiply(corrected_adaptor_raw/np.linalg.norm(corrected_adaptor_raw), filter['thigh_r'].quatConj(gyr_quat_thigh_r))
-            filter['thigh_r'].state  = state_thigh_r
+            inject_correction(filter['thigh_r'], corrected_adaptor_raw, use_mag)
             time_mt['correction']['hip_r'].append(time.time() - start_time)
 
             start_time = time.time()
             corrected_joint_aligned, corrected_joint_raw = correct_nonsagittal_knee(joint_quat, seg2sens, filter_aligned, sensor_transforms, timestep, joint = 'knee_r', prox = 'thigh_r', dist = 'shank_r', alpha = constant_common.ALPHA_KNEE)
             filter_aligned['shank_r'][timestep] = 1*corrected_joint_aligned
             filter_raw['shank_r'][timestep]     = 1*corrected_joint_raw
-            state_shank_r            = filter['shank_r'].state
-            gyr_quat_shank_r         = state_shank_r['gyrQuat']
-            state_shank_r['accQuat'] = filter['shank_r'].quatMultiply(corrected_joint_raw/np.linalg.norm(corrected_joint_raw), filter['shank_r'].quatConj(gyr_quat_shank_r))
-            filter['shank_r'].state  = state_shank_r
+            inject_correction(filter['shank_r'], corrected_joint_raw, use_mag)
             time_mt['correction']['knee_r'].append(time.time() - start_time)
 
             start_time = time.time()
             corrected_joint_aligned, corrected_joint_raw = correct_heading(joint_quat, seg2sens, filter_aligned, sensor_transforms, timestep, joint = 'ankle_r', prox = 'shank_r', dist = 'foot_r', alpha = constant_common.KAPPA_ANKLE, cons_flag = cons_flag)
             filter_aligned['foot_r'][timestep] = 1*corrected_joint_aligned
             filter_raw['foot_r'][timestep]     = 1*corrected_joint_raw
-            state_foot_r            = filter['foot_r'].state
-            gyr_quat_foot_r         = state_foot_r['gyrQuat']
-            state_foot_r['accQuat'] = filter['foot_r'].quatMultiply(corrected_joint_raw/np.linalg.norm(corrected_joint_raw), filter['foot_r'].quatConj(gyr_quat_foot_r))
-            filter['foot_r'].state  = state_foot_r
+            inject_correction(filter['foot_r'], corrected_joint_raw, use_mag)
             time_mt['correction']['ankle_r'].append(time.time() - start_time)
 
             # left side
@@ -334,30 +379,21 @@ def apply_vqf_cf(data_main_mt, seg2sens, initial_orientation, dim = '6D', fs = 1
             corrected_adaptor_aligned, corrected_adaptor_raw = correct_heading(joint_quat, seg2sens, filter_aligned, sensor_transforms, timestep, joint = 'hip_l', prox = 'pelvis', dist = 'thigh_l', alpha = constant_common.KAPPA_HIP, cons_flag = cons_flag)
             filter_aligned['thigh_l'][timestep] = 1*corrected_adaptor_aligned
             filter_raw['thigh_l'][timestep]     = 1*corrected_adaptor_raw
-            state_thigh_l            = filter['thigh_l'].state
-            gyr_quat_thigh_l         = state_thigh_l['gyrQuat']
-            state_thigh_l['accQuat'] = filter['thigh_l'].quatMultiply(corrected_adaptor_raw/np.linalg.norm(corrected_adaptor_raw), filter['thigh_l'].quatConj(gyr_quat_thigh_l))
-            filter['thigh_l'].state  = state_thigh_l
+            inject_correction(filter['thigh_l'], corrected_adaptor_raw, use_mag)
             time_mt['correction']['hip_l'].append(time.time() - start_time)
 
             start_time = time.time()
             corrected_joint_aligned, corrected_joint_raw = correct_nonsagittal_knee(joint_quat, seg2sens, filter_aligned, sensor_transforms, timestep, joint = 'knee_l', prox = 'thigh_l', dist = 'shank_l', alpha = constant_common.ALPHA_KNEE)
             filter_aligned['shank_l'][timestep] = 1*corrected_joint_aligned
             filter_raw['shank_l'][timestep]     = 1*corrected_joint_raw
-            state_shank_l            = filter['shank_l'].state
-            gyr_quat_shank_l         = state_shank_l['gyrQuat']
-            state_shank_l['accQuat'] = filter['shank_l'].quatMultiply(corrected_joint_raw/np.linalg.norm(corrected_joint_raw), filter['shank_l'].quatConj(gyr_quat_shank_l))
-            filter['shank_l'].state  = state_shank_l
+            inject_correction(filter['shank_l'], corrected_joint_raw, use_mag)
             time_mt['correction']['knee_l'].append(time.time() - start_time)
 
             start_time = time.time()
             corrected_joint_aligned, corrected_joint_raw = correct_heading(joint_quat, seg2sens, filter_aligned, sensor_transforms, timestep, joint = 'ankle_l', prox = 'shank_l', dist = 'foot_l', alpha = constant_common.KAPPA_ANKLE, cons_flag = cons_flag)
             filter_aligned['foot_l'][timestep] = 1*corrected_joint_aligned
             filter_raw['foot_l'][timestep]     = 1*corrected_joint_raw
-            state_foot_l            = filter['foot_l'].state
-            gyr_quat_foot_l         = state_foot_l['gyrQuat']
-            state_foot_l['accQuat'] = filter['foot_l'].quatMultiply(corrected_joint_raw/np.linalg.norm(corrected_joint_raw), filter['foot_l'].quatConj(gyr_quat_foot_l))
-            filter['foot_l'].state  = state_foot_l
+            inject_correction(filter['foot_l'], corrected_joint_raw, use_mag)
             time_mt['correction']['ankle_l'].append(time.time() - start_time)
 
             last_check = 1*timestep
@@ -371,31 +407,60 @@ def apply_ahrs_cf(data_main_mt, f_type, seg2sens, initial_orientation, dim = '6D
     ''' Apply AHRS filters with constraint feedback to get corrected orientation
     '''
     
+    dim     = dim.upper()
+    use_mag = (dim == '9D')
+
+    if use_mag:
+        for sensor_name in data_main_mt.keys():
+            assert set(['Mag_X', 'Mag_Y', 'Mag_Z']).issubset(data_main_mt[sensor_name].columns), \
+                f'9D constraint feedback needs magnetometer data, missing for {sensor_name}'
+
     num_static_samples = constant_common.STATIC_STANDING_PERIOD*fs
     num_samples        = len(data_main_mt['pelvis']['Acc_X'])
 
-    if f_type == 'MAD':
-        filter = Madgwick(frequency = fs, gain = params[0])
-    elif f_type == 'MAH':
-        filter = Mahony(frequency = fs, kp = params[0], ki = params[1])
-    elif f_type == 'EKF':
-        filter = EKF(frequency = fs, noises = [params[0]**2, params[1]**2, params[2]**2]) # NOTE: no ENU for 6D cause we don't know where is North without magnetometer
+    def build_filter():
+        if f_type == 'MAD':
+            return Madgwick(frequency = fs, gain = params[0])
+        
+        elif f_type == 'MAH':
+            return Mahony(frequency = fs, kp = params[0], ki = params[1])
+        
+        elif f_type == 'EKF':
+            if use_mag:
+                ekf = EKF(frequency = fs, noises = [params[0]**2, params[1]**2, params[2]**2],
+                          frame = 'ENU', mag = np.empty((0, 3)))
+                ekf.a_ref = -ekf.a_ref
+
+                return ekf
+            
+            return EKF(frequency = fs, noises = [params[0]**2, params[1]**2, params[2]**2]) # NOTE: no ENU for 6D cause we don't know where is North without magnetometer
+        
+        raise ValueError(f'constraint feedback is not implemented for filter {f_type}')
+
+    if use_mag:
+        filter = {sensor_name: build_filter() for sensor_name in data_main_mt.keys()}
+    else:
+        shared = build_filter()
+        filter = {sensor_name: shared for sensor_name in data_main_mt.keys()}
 
     sensor_transforms = {}
 
-    filter_raw     = init_orientation_ahrs(data_main_mt, num_samples, use_acc = True)
+    filter_raw     = init_orientation_ahrs(data_main_mt, num_samples, use_acc = True, use_mag = use_mag, f_type = f_type)
     filter_aligned = {}
 
     timestep = 1
 
     while timestep < num_static_samples:
         for sensor_name in data_main_mt.keys():
-            filter_raw[sensor_name][timestep], _ = one_step_update_ahrs(filter, f_type, data_main_mt, filter_raw[sensor_name][timestep-1], sensor_name, timestep)
-        
+            filter_raw[sensor_name][timestep], _ = one_step_update_ahrs(filter[sensor_name], f_type, data_main_mt, filter_raw[sensor_name][timestep-1], sensor_name, timestep, use_mag)
+
         timestep += 1
 
     for sensor_name in data_main_mt.keys():
-        sensor_transforms[sensor_name] = get_sensor_transform(initial_orientation[sensor_name], filter_raw[sensor_name], num_static_samples)
+        if use_mag:
+            sensor_transforms[sensor_name] = quaternion.quaternion(1.0, 0.0, 0.0, 0.0)
+        else:
+            sensor_transforms[sensor_name] = get_sensor_transform(initial_orientation[sensor_name], filter_raw[sensor_name], num_static_samples)
 
         filter_aligned[sensor_name] = 1*quaternion.as_quat_array(filter_raw[sensor_name])
         for k in range(num_samples):
@@ -415,7 +480,7 @@ def apply_ahrs_cf(data_main_mt, f_type, seg2sens, initial_orientation, dim = '6D
         # update the filter_raw and filter_aligned every timestep
         for sensor_name in data_main_mt.keys():
             
-            filter_raw[sensor_name][timestep], time_update = one_step_update_ahrs(filter, f_type, data_main_mt, filter_raw[sensor_name][timestep-1], sensor_name, timestep)
+            filter_raw[sensor_name][timestep], time_update = one_step_update_ahrs(filter[sensor_name], f_type, data_main_mt, filter_raw[sensor_name][timestep-1], sensor_name, timestep, use_mag)
             time_mt['filtering'][sensor_name].append(time_update)
 
             filter_aligned[sensor_name][timestep] = 1*quaternion.as_quat_array(filter_raw[sensor_name][timestep])
