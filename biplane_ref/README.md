@@ -5,6 +5,20 @@
 This folder contains the implementation to process data of Experiment 1.
 
 ## 💾 Data
+
+### Sensor Placement and Orientation
+
+Biostamp MC10 inertial sensors were used for motion tracking. The sensor coordinate frames were configured as follows:
+- Right Thigh & Shank: `X = Downward`, `Y = Forward`, `Z = Lateral` (Right)
+- Left Thigh & Shank: `X = Downward`, `Y = Backward`, `Z = Lateral` (Left)
+
+(Of note, data were later rotated 180 degrees around the Z axis to reuse processing code from Xsens MTw Awinda sensors, see `mocap_ref/` for more details)
+
+### Sampling Frequencies
+
+Data were collected at 250 Hz in this experiment but later resampled to 100 Hz before processing.
+
+### Data tree
 After downloading data from FigShare, structuring your data folders following the directory tree in `biplane_ref/data/README.md` to run the code.
 
 ## 🚀 Run the Code

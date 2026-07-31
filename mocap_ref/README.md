@@ -5,6 +5,20 @@
 This folder contains the benchmarking implementation using data collected from Experiments 2 and 3 in [the paper]().
 
 ## 💾 Data
+### Sensor Placement and Orientation
+
+Xsens MTw Awinda inertial sensors were used for motion tracking. The sensor coordinate frames were configured as follows:
+- Right Thigh & Shank: `X = Upward`, `Y = Backward`, `Z = Lateral` (Right)
+- Left Thigh & Shank: `X = Upward`, `Y = Forward`, `Z = Lateral` (Left)
+- Foot (Dorsal Surface): `X = Proximal`, `Y = Right`, `Z = Outward` (Dorsal Normal)
+- Pelvis (Lower Back): `X = Upward`, `Y = Left`, `Z = Backward`
+
+### Sampling Frequencies
+
+- Experiment 2: Data collected at 40 Hz (includes additional thigh/shank sensors for placement impact analysis).
+- Experiment 3: Data collected at 100 Hz.
+
+### Data tree
 After downloading data from FigShare, structuring your data folders following the directory tree in `mocap_ref/data/README.md` to run the code.
 
 ## 🚀 Run the Code
