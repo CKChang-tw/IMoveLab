@@ -62,8 +62,8 @@ This is optional, and you can always tune your filters with a different method.
 ## 📝 Notes on the sensor-to-segment calibration
 ### Functional Calibration Guidelines
 Functional calibration in this pipeline relies on two main principles:
-- Static Tasks (e.g., static standing or static toe touching): The average 3-axis accelerometer data is used to identify the gravity vector, which is assumed to align with a specific body axis (e.g., the proximal-distal longitudinal axis during static standing).
-- Dynamic Tasks (e.g., repetitive walking or squatting): Principal Component Analysis (PCA) is applied to the 3-axis gyroscope data to identify the primary axis of motion.
+- Static tasks (e.g., static standing or static toe touching): The average 3-axis accelerometer data is used to identify the gravity vector, which may be assumed to align with a specific body axis (e.g., the proximal-distal longitudinal axis during static standing).
+- Dynamic tasks (e.g., walking or squatting): principal component analysis (PCA) is applied to the 3-axis gyroscope data to identify the primary axis of motion.
 
 Beyond the specific protocol used in this study, alternative calibration tasks following these two principles can also be applied.
 
