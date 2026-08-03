@@ -61,3 +61,15 @@ Add `do_eval` to evaluate performance of different sets of parameters, and then,
 This is optional, and you can always tune your filters with a different method.
 
 
+## 📝 Notes on the sensor-to-segment calibration
+### Functional Calibration Guidelines
+Functional calibration in this pipeline relies on two main principles:
+- Static Tasks (e.g., static standing or static toe touching): The average 3-axis accelerometer data is used to identify the gravity vector, which is assumed to align with a specific body axis (e.g., the proximal-distal longitudinal axis during static standing).
+- Dynamic Tasks (e.g., repetitive walking or squatting): Principal Component Analysis (PCA) is applied to the 3-axis gyroscope data to identify the primary axis of motion.
+
+Beyond the specific protocol used in this study, alternative calibration tasks following these two principles can also be applied.
+
+### Calibration Types
+This study performs full calibration for each sensor, which requires two calibration tasks (typically one static and one dynamic, two static, or two dynamic).
+
+When only a single task (typically static standing) is available, the calibration is partial and only aligns a single axis. The common partial calibration is vertical calibration with only static standing.
