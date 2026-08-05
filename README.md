@@ -4,8 +4,9 @@
 
 # Biomechanics-Informed Inertial Tracking Achieves the Accuracy of Marker-Based Kinematics
 
-[![paper](https://img.shields.io/badge/paper-link_(coming_soon)-green)]() <!-- update link for preprint -->
-[![data](https://img.shields.io/badge/data-link-yellow)](https://figshare.com/s/3b31b5f932b865e52ad3) 
+[![page](https://img.shields.io/badge/project_page-link-blue)](https://imovelab.org/)
+[![paper](https://img.shields.io/badge/paper-link-green)](https://www.nature.com/articles/s41467-026-75981-y) 
+[![data](https://img.shields.io/badge/data-link-yellow)](https://figshare.com/s/3b31b5f932b865e52ad3)
 
 **IMoveLab** is a workflow for human motion tracking with inertial measurement units (IMUs). 
 
@@ -39,7 +40,7 @@ IMoveLab is licensed under the [Carnegie Mellon Software License](https://github
 
 
 ## 📝 Citation
-Coming soon.
+Phan, V., Li, Z., Meinders, E., Gale, T., Anderst, W., Ng-Thow-Hing, J., Khandan, A., and Halilaj, E., "Biomechanics-Informed Inertial Tracking Achieves the Accuracy of Marker-based Kinematics," Nature Communications, [https://doi.org/10.1038/s41467-026-75981-y](https://doi.org/10.1038/s41467-026-75981-y) (2026).
 
 ## 📧 Contact
 Please reach out to Vu Phan (vuphan@andrew.cmu.edu) or Eni Halilaj (ehalilaj@andrew.cmu.edu) for any questions regarding this work.
